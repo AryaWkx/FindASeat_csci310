@@ -5,18 +5,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private ViewPagerAdapter adapter;
+    FirebaseDatabase root;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         load_login();
-
+        root = FirebaseDatabase.getInstance();
+        reference = root.getReference("testKey");
+        reference.setValue("666");
     }
 
     void load_login() {
