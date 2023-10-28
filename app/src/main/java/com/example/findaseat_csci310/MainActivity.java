@@ -4,9 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,9 +25,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         load_login();
-        root = FirebaseDatabase.getInstance();
-        reference = root.getReference("testKey");
-        reference.setValue("666");
+//
+//        User item = new User("item1", "val");
+//
+//        root = FirebaseDatabase.getInstance();
+//        reference = root.getReference();
+//        reference.child("testKey2").child("001").setValue(item);
     }
 
     void load_login() {
@@ -61,5 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+
     }
+
+
 }
