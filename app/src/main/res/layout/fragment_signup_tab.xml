@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/signup_tab_fragment"
     android:orientation="vertical"
     tools:context=".SignupTabFragment">
 
@@ -27,6 +28,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/avatar"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:scaleType="fitCenter"
@@ -64,7 +66,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext_bkg"
-                android:drawableLeft="@drawable/baseline_email_24"
+                android:drawableLeft="@drawable/baseline_perm_identity_24"
                 android:drawablePadding="8dp"
                 android:hint="USC ID"
                 android:padding="8dp" />
@@ -77,7 +79,7 @@
                 android:layout_marginTop="5dp"
                 android:padding="8dp"
                 android:hint="Name"
-                android:drawableLeft="@drawable/baseline_password_24"
+                android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
                 android:drawablePadding="8dp"
                 android:background="@drawable/edittext_bkg"/>
 
@@ -89,7 +91,7 @@
                 android:layout_marginTop="5dp"
                 android:padding="8dp"
                 android:hint="Faculty/Student"
-                android:drawableLeft="@drawable/baseline_password_24"
+                android:drawableLeft="@drawable/baseline_local_cafe_24"
                 android:drawablePadding="8dp"
                 android:background="@drawable/edittext_bkg"/>
 
