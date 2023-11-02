@@ -18,19 +18,11 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private ViewPagerAdapter adapter;
-    FirebaseDatabase root;
-    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         load_login();
-//
-//        User item = new User("item1", "val");
-//
-//        root = FirebaseDatabase.getInstance();
-//        reference = root.getReference();
-//        reference.child("testKey2").child("001").setValue(item);
     }
 
     void load_login() {
@@ -71,6 +63,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
+    
 }

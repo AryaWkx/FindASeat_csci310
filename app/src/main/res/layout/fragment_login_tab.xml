@@ -29,11 +29,11 @@
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:id="@+id/login_email"
+                android:id="@+id/login_uscid"
                 android:layout_marginTop="0dp"
                 android:padding="8dp"
-                android:hint="Email"
-                android:drawableLeft="@drawable/baseline_email_24"
+                android:hint="USC ID"
+                android:drawableLeft="@drawable/baseline_perm_identity_24"
                 android:drawablePadding="8dp"
                 android:background="@drawable/edittext_bkg"/>
 

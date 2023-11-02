@@ -114,6 +114,7 @@ public class SignupTabFragment extends Fragment {
                     uscID.setText("");
                     name.setText("");
                     affliation.setText("");
+                    imageView.setImageURI(defaultUri);
                 }
             }
         });
