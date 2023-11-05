@@ -10,7 +10,7 @@ public class User {
     public String pwd;
 
 
-    User(String n, String id, String e, String a, String p) {
+    User(String e, String id, String n, String a, String p) {
         name = n;
         usc_id = id;
         email = e;
