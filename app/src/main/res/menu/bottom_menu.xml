@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id = "@+id/bottom_map"
+        android:icon="@drawable/baseline_map_24"
+        android:title="Map"/>
+    <item
+        android:id = "@+id/bottom_reservations"
+        android:icon="@drawable/baseline_format_list_bulleted_24"
+        android:title="Reservations"/>
+    <item
+        android:id = "@+id/bottom_profile"
+        android:icon="@drawable/baseline_person_pin_24"
+        android:title="Profile"/>
+</menu>

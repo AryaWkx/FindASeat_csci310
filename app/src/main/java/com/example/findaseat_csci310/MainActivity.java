@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.content.Intent;
 import android.view.Gravity;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap myMap;
     private String building_name;
     private boolean isLogin = false;
-    private ConstraintLayout layout;
+    private RelativeLayout layout;
     private String usrID;
     private String username;
 
@@ -45,18 +48,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
 
+        // get intent from login page
+        Intent intent = getIntent();
         isLogin = intent.getBooleanExtra("isLogin", false);
         usrID = intent.getStringExtra("usrID");
         username = intent.getStringExtra("username");
         // log user ID
         if (isLogin) {
             Toast.makeText(getApplicationContext(), "Logged in as " + username, Toast.LENGTH_SHORT).show();
-        } else {
-//            Toast.makeText(getApplicationContext(), "Not logged in", Toast.LENGTH_SHORT).show();
         }
         setContentView(R.layout.activity_main);
+
+        // navigation bar selector
+//        BottomNavigationView bottomNavigationView = findViewById(R.id.Navigation);
+//        bottomNavigationView.setSelectedItemId(R.id.bottom_map);
+//        bottomNavigationView.setOnItemSelectedListener(item -> {
+//            switch (item.getItemId()) {
+//                case R.id.bottom_map:
+//                    return true;
+//                case R.id.bottom_profile:
+//                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                    finish();
+//                    return true;
+//                case R.id.bottom_reservations:
+//                    if (isLogin) {
+//                        startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+//                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                        finish();
+//                    } else {
+//                        promptLogin();
+//                    }
+//                    return true;
+//            }
+//            return false;
+//        });
         load_mapview();
     }
 
@@ -97,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         myMap.setMaxZoomPreference(20);
         // set min zoom level
         myMap.setMinZoomPreference(15);
+        myMap.setPadding(0, 0, 0, 240);
         myMap.getUiSettings().setZoomControlsEnabled(true);
         myMap.getUiSettings().setCompassEnabled(true);
         myMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -113,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } else {
                     // TODO: jump to reserve page if logged in, else jump to login page
                     if (isLogin) {
-                        layout = findViewById(R.id.constraintLayout);
+                        layout = findViewById(R.id.main_layout);
                         createPopupWindow();
                     } else {
                         promptLogin();
