@@ -1,0 +1,32 @@
+<!-- item_time_slot.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/timeSlot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Time Slot: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Indoor/Outdoor: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/availableSeats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Available Seats: "
+        android:textSize="16sp"/>
+</LinearLayout>
