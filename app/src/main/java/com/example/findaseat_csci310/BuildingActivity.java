@@ -1,16 +1,18 @@
 package com.example.findaseat_csci310;
 
-public class BuildingActivity {
-    // trying copilot
-    void load_building() {
-        setContentView(R.layout.building_main);
+import android.os.Bundle;
 
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                load_login();
-            }
-        });
+import androidx.appcompat.app.AppCompatActivity;
+
+public class BuildingActivity extends AppCompatActivity {
+
+    // write oncreate method
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
     }
+
 }

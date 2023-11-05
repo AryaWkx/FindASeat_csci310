@@ -29,7 +29,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotViewHolder>{
     public void onBindViewHolder(@NonNull TimeSlotViewHolder holder, int position) {
         holder.timeSlot.setText(timeSlotList.get(position).getTime());
         holder.type.setText(timeSlotList.get(position).getType());
-        holder.availableSeats.setText(timeSlotList.get(position).getAvailableSeats());
+        holder.availableSeats.setText(String.valueOf(timeSlotList.get(position).getAvailableSeats()));
     }
 
     @Override
