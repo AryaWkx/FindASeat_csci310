@@ -1,28 +1,76 @@
 package com.example.findaseat_csci310;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Map;
+import java.util.Vector;
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private ViewPagerAdapter adapter;
-    FirebaseDatabase root;
-    DatabaseReference reference;
+
+
+    private GoogleMap myMap;
+    private String building_name;
+    private boolean isLogin = false;
+
+    private boolean mode = false; // 0 for info, 1 for reserve
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        load_login();
-        root = FirebaseDatabase.getInstance();
-        reference = root.getReference("testKey");
-        reference.setValue("666");
+        setContentView(R.layout.activity_main);
+//        load_login();
+
+        addDummyBuidings();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        FloatingActionButton menufab = findViewById(R.id.floatingActionButton1);
+        FloatingActionButton reservefab = findViewById(R.id.floatingActionButton2);
+        menufab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mode = true;
+                menufab.setVisibility(View.INVISIBLE);
+                reservefab.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), "Switched to reserve action mode", Toast.LENGTH_SHORT).show();
+            }
+        });
+        reservefab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mode = false;
+                menufab.setVisibility(View.VISIBLE);
+                reservefab.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), "Switched to info display mode", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     void load_login() {
@@ -61,5 +109,43 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        myMap = googleMap;
+        LatLng usc = new LatLng(34.0222316, -118.2845691);
+        MarkerOptions usc_marker = new MarkerOptions().position(usc).title("Taper Hall");
+        usc_marker.snippet("USC");
+        myMap.addMarker(usc_marker);
+        myMap.moveCamera(CameraUpdateFactory.newLatLng(usc));
+
+        // initialize zoom level
+        myMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+        // set max zoom level
+        myMap.setMaxZoomPreference(20);
+        // set min zoom level
+        myMap.setMinZoomPreference(15);
+        myMap.getUiSettings().setZoomControlsEnabled(true);
+        myMap.getUiSettings().setCompassEnabled(true);
+        // create clickable markers
+        myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                // return the info of the marker
+                building_name = marker.getTitle();
+                if (!mode) {
+                    marker.showInfoWindow();
+                } else {
+                    // TODO: jump to reserve page if logged in, else jump to login page
+                }
+                return true;
+            }
+        });
+    }
+
+    private void addDummyBuidings() {
+
     }
 }

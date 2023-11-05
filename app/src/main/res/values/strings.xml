@@ -2,4 +2,5 @@
     <string name="app_name">FindASeat_csci310</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Maps_API_Key">AIzaSyCl7_r9-6u5xENzWtQMV3Kj9ZYAXcIAr08</string>
 </resources>
