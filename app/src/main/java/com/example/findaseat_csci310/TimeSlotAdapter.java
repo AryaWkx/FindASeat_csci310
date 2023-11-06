@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotViewHolder>{
 
     Context context;
-    List<TimeSlot> timeSlotList;
+    List<TimeSlot> timeSlotList = new ArrayList<TimeSlot>();
     private OnClickListener onClickListener;
 
     public TimeSlotAdapter(Context context, List<TimeSlot> timeSlotList) {

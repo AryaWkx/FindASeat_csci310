@@ -5,17 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainbkg"
+    android:background="@color/lavender"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="380dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/viewpager_bkg"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent=".78"
@@ -44,7 +42,7 @@
                 android:id="@+id/building_info_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="120dp"
+                android:layout_marginStart="110dp"
                 android:layout_marginTop="16dp"
                 android:text="Building Info"
                 android:textSize="24dp"
@@ -94,7 +92,7 @@
         <!-- add a scroll view inside a cardview below this cardview -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="350dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -109,42 +107,52 @@
             app:strokeColor="#E6E6FA"
             app:strokeWidth="2dp">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="350dp">
 
-                <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/booking_placeholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Booking Details: (drag down records for more)"
+                    android:textSize="16sp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTimeSlots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:scrollbars="vertical"
+                    android:padding="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/booking_placeholder"/>
 
-                    <TextView
-                        android:id="@+id/booking_placeholder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Placeholder for booking details"
-                        android:textSize="16sp"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewTimeSlots"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="vertical"
-                        android:padding="8dp"
-                        app:layout_constraintTop_toBottomOf="@id/booking_placeholder"/>
-
-                <!-- ... booking info timeslots -->
-
-
-                </LinearLayout>
-
-            </ScrollView>
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/Navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/navigation_bkg"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/navigation_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_menu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

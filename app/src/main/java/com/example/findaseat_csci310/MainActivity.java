@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -182,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
 
-        Vector<Integer> indoor = new Vector<Integer>(26);
-        Vector<Integer> outdoor = new Vector<Integer>(26);
+        ArrayList<Integer> indoor = new ArrayList<Integer>(26);
+        ArrayList<Integer> outdoor = new ArrayList<Integer>(26);
         for (int i=0; i<26; i++){
             indoor.add(10);
             outdoor.add(2);
