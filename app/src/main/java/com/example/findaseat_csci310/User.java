@@ -38,10 +38,7 @@ public class User {
         return pwd;
     }
 
-    public void getReservedHistory(){
 
-
-    }
 
 
 }

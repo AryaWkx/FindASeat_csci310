@@ -460,6 +460,7 @@
             android:textColor="#26C62E"
             android:textSize="16sp"
             android:textStyle="bold"
+            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="2dp"
             tools:layout_editor_absoluteY="258dp" />
 
