@@ -1,5 +1,6 @@
 package com.example.findaseat_csci310;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,6 +24,9 @@ import com.google.firebase.storage.StorageReference;
 
 public class UserActivity extends AppCompatActivity {
     public User user;
+
+    public String usr_id;
+    public Uri downloadUri;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -53,16 +57,22 @@ public class UserActivity extends AppCompatActivity {
             }
         });
         // Reference to an image file in Cloud Storage
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars/[user_id].jpg");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars/"+usr_id+".jpg");
+        // Get the download URL
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<android.net.Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<android.net.Uri> task) {
+                if (task.isSuccessful()) {
+                    downloadUri = task.getResult();
+                    ImageView imageView = (ImageView) findViewById(R.id.avatar);
+                    imageView.setImageURI(downloadUri);
+                } else {
+                    // Handle failures
+                    Log.d("firebase", "Error getting avatar", task.getException());
+                }
+            }
+        });
 
-// ImageView in your Activity
-        ImageView imageView = findViewById(R.id.imageView);
-
-// Download directly from StorageReference using Glide
-// (See MyAppGlideModule for Loader registration)
-        Glide.with(context)
-                .load(storageReference)
-                .into(imageView);
     }
 
 

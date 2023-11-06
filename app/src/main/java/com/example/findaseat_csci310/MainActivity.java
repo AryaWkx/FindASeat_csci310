@@ -2,17 +2,19 @@ package com.example.findaseat_csci310;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.content.Intent;
 import android.view.Gravity;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 import java.util.Map;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -36,28 +39,60 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap myMap;
     private String building_name;
     private boolean isLogin = false;
-    private ConstraintLayout layout;
+    private RelativeLayout layout;
     private String usrID;
     private String username;
+
+    private BottomNavigationView bottomNavigationView;
 
     private boolean mode = false; // 0 for info, 1 for reserve
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
 
+        // get intent from login page
+        Intent intent = getIntent();
         isLogin = intent.getBooleanExtra("isLogin", false);
         usrID = intent.getStringExtra("usrID");
         username = intent.getStringExtra("username");
         // log user ID
         if (isLogin) {
             Toast.makeText(getApplicationContext(), "Logged in as " + username, Toast.LENGTH_SHORT).show();
-        } else {
-//            Toast.makeText(getApplicationContext(), "Not logged in", Toast.LENGTH_SHORT).show();
         }
         setContentView(R.layout.activity_main);
         load_mapview();
+
+//        addDummyBuidings();
+        addDummyUser();
+
+        // navigation bar selector
+        bottomNavigationView = findViewById(R.id.Navigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_map);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_map) {
+                return true;
+            } else if (item.getItemId() == R.id.bottom_profile) {
+                if (isLogin) {
+                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                } else {
+                    promptLogin();
+                }
+                return true;
+            } else if (item.getItemId() == R.id.bottom_reservations) {
+                if (isLogin) {
+                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                } else {
+                    promptLogin();
+                }
+                return true;
+            }
+            return false;
+        });
     }
 
     void load_mapview() {
@@ -97,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         myMap.setMaxZoomPreference(20);
         // set min zoom level
         myMap.setMinZoomPreference(15);
+        myMap.setPadding(0, 0, 0, 240);
         myMap.getUiSettings().setZoomControlsEnabled(true);
         myMap.getUiSettings().setCompassEnabled(true);
         myMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -107,18 +143,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 // return the info of the marker
-                building_name = marker.getTitle();
                 if (!mode) {
                     marker.showInfoWindow();
                 } else {
-                    // TODO: jump to reserve page if logged in, else jump to login page
-                    if (isLogin) {
-                        layout = findViewById(R.id.constraintLayout);
-                        createPopupWindow();
-                    } else {
-                        promptLogin();
-                    }
-
+                    // jump to reserve page if logged in, else jump to login page
+                    reserveHandler(marker.getTitle());
                 }
                 return true;
             }
@@ -141,47 +170,62 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
+    private void reserveHandler(String name) {
+        if (isLogin) {
+            building_name = name;
+            layout = findViewById(R.id.main_layout);
+            createPopupWindow(name);
+        } else {
+            promptLogin();
+        }
+    }
     private void addDummyBuidings() {
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
+
+        Vector<Integer> indoor = new Vector<Integer>(26);
+        Vector<Integer> outdoor = new Vector<Integer>(26);
+        for (int i=0; i<26; i++){
+            indoor.add(10);
+            outdoor.add(2);
+        }
         // Taper Hall
-        reference.child("Buildings").child("Taper Hall (THH)").child("lat").setValue(34.0222316);
-        reference.child("Buildings").child("Taper Hall (THH)").child("lng").setValue(-118.2845691);
+        Building thh = new Building("Taper Hall (THH)", 34.0222316, -118.2845691, indoor, outdoor);
+        reference.child("Buildings").child("Taper Hall (THH)").setValue(thh);
         // Leavey Library
-        reference.child("Buildings").child("Leavey Library (LVL)").child("lat").setValue(34.0217200);
-        reference.child("Buildings").child("Leavey Library (LVL)").child("lng").setValue(-118.2828376);
+        Building lvl = new Building("Leavey Library (LVL)", 34.0217200, -118.2828376, indoor, outdoor);
+        reference.child("Buildings").child("Leavey Library (LVL)").setValue(lvl);
         // Doheny Memorial Library
-        reference.child("Buildings").child("Doheny Memorial Library (DML)").child("lat").setValue(34.0201440);
-        reference.child("Buildings").child("Doheny Memorial Library (DML)").child("lng").setValue(-118.2837366);
+        Building dml = new Building("Doheny Memorial Library (DML)", 34.0201440, -118.2837366, indoor, outdoor);
+        reference.child("Buildings").child("Doheny Memorial Library (DML)").setValue(dml);
         // Science & Engineering Library
-        reference.child("Buildings").child("Science & Engineering Library (SEL)").child("lat").setValue(34.0196113);
-        reference.child("Buildings").child("Science & Engineering Library (SEL)").child("lng").setValue(-118.2887994);
+        Building sel = new Building("Science & Engineering Library (SEL)", 34.0196113, -118.2887994, indoor, outdoor);
+        reference.child("Buildings").child("Science & Engineering Library (SEL)").setValue(sel);
         // Kaprielian Hall
-        reference.child("Buildings").child("Kaprielian Hall (KAP)").child("lat").setValue(34.0224902);
-        reference.child("Buildings").child("Kaprielian Hall (KAP)").child("lng").setValue(-118.2910134);
+        Building kap = new Building("Kaprielian Hall (KAP)", 34.0224902, -118.2910134, indoor, outdoor);
+        reference.child("Buildings").child("Kaprielian Hall (KAP)").setValue(kap);
         // Fertitta Hall
-        reference.child("Buildings").child("Fertitta Hall (JFF)").child("lat").setValue(34.0187263);
-        reference.child("Buildings").child("Fertitta Hall (JFF)").child("lng").setValue(-118.2824098);
+        Building jff = new Building("Fertitta Hall (JFF)", 34.0187263, -118.2824098, indoor, outdoor);
+        reference.child("Buildings").child("Fertitta Hall (JFF)").setValue(jff);
         // Hoffman Hall
-        reference.child("Buildings").child("Hoffman Hall (HOH)").child("lat").setValue(34.0187226);
-        reference.child("Buildings").child("Hoffman Hall (HOH)").child("lng").setValue(-118.2852340);
+        Building hoh = new Building("Hoffman Hall (HOH)", 34.0187226, -118.2852340, indoor, outdoor);
+        reference.child("Buildings").child("Hoffman Hall (HOH)").setValue(hoh);
         // USC Village
-        reference.child("Buildings").child("USC Village").child("lat").setValue(34.0252800);
-        reference.child("Buildings").child("USC Village").child("lng").setValue(-118.2849921);
+        Building usc = new Building("USC Village", 34.0252800, -118.2849921, indoor, outdoor);
+        reference.child("Buildings").child("USC Village").setValue(usc);
         // Grace Ford Salvatori Hall
-        reference.child("Buildings").child("Grace Ford Salvatori Hall (GFS)").child("lat").setValue(34.0213012);
-        reference.child("Buildings").child("Grace Ford Salvatori Hall (GFS)").child("lng").setValue(-118.2880528);
+        Building gfs = new Building("Grace Ford Salvatori Hall (GFS)", 34.0213012, -118.2880528, indoor, outdoor);
+        reference.child("Buildings").child("Grace Ford Salvatori Hall (GFS)").setValue(gfs);
         // Parkside Residential Area
-        reference.child("Buildings").child("Parkside Residential Area").child("lat").setValue(34.0188311);
-        reference.child("Buildings").child("Parkside Residential Area").child("lng").setValue(-118.2899874);
+        Building prk = new Building("Parkside Residential Area", 34.0188311, -118.2899874, indoor, outdoor);
+        reference.child("Buildings").child("Parkside Residential Area").setValue(prk);
     }
 
-    private void createPopupWindow() {
+    private void createPopupWindow(String name) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.reserve_popup, null);
-        TextView buildingName = popupView.findViewById(R.id.building_name_field);
-        buildingName.setText(building_name);
+        TextView buildingName = popupView.findViewById(R.id.reserved_name_field);
+        buildingName.setText(name);
 
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -204,8 +248,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                 })
-                .setNegativeButton("Cancel", (dialog, id1) -> dialog.dismiss());
+                .setNegativeButton("Cancel", (dialog, id1) -> {
+                    dialog.dismiss();
+                    bottomNavigationView.setSelectedItemId(R.id.bottom_map);
+                });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void addDummyUser() {
+        User u = new User("email@gmail.com", "0000000001", "test", "Student", "12345678");
+        Reservation r1 = new Reservation("Taper Hall (THH)", 4, 5, "indoor");
     }
 }

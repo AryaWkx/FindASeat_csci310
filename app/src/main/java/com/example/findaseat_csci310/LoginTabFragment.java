@@ -37,7 +37,6 @@ import com.google.firebase.database.FirebaseDatabase;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login_tab, container, false);
 
-        // TODO: Add login functionality
         // read input in edit text fields
         EditText ID = view.findViewById(R.id.login_uscid);
         EditText pwd = view.findViewById(R.id.login_password);
@@ -76,7 +75,6 @@ import com.google.firebase.database.FirebaseDatabase;
                          Log.d("firebase", "Success reading: id="+userid+", pwd="
                                  +correctPassword+", username="+username);
                          checkpwd();
-
                      }
                  }
              }
