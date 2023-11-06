@@ -33,6 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 
 public class UserActivity extends AppCompatActivity {
     public User user;
@@ -41,6 +44,8 @@ public class UserActivity extends AppCompatActivity {
     public FirebaseDatabase root;
     public DatabaseReference reference;
     private BottomNavigationView bottomNavigationView;
+    private String in_out;
+    private Building building;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +125,10 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void onClickCancel(View view) {
+        if (user.currentReservation == null) {
+            Toast.makeText(getApplicationContext(), "No current reservation", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Log.d("debug", "onClickCancel called");
         // pop up an alert dialog to confirm cancellation
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -142,6 +151,41 @@ public class UserActivity extends AppCompatActivity {
         // Set currentReservation = null
         user.currentReservation = null;
         load_info();
+
+
+        // update building database
+        String building_name = user.history.get(0).getBuilding();
+        in_out = user.history.get(0).getInOut();
+        int start = user.history.get(0).start_time;
+        int end = user.history.get(0).end_time;
+        // read building data into building
+        reference.child("Buildings").child(building_name).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (String.valueOf(task.getResult().getValue()) != null) {
+                        building = task.getResult().getValue(Building.class);
+
+                        // update building object
+                        if (in_out.equals("indoor")) {
+                            for (int i=start; i<=end; i++) {
+                                building.indoor_avail.set(i, building.indoor_avail.get(i)+1);
+                            }
+                        } else {
+                            for (int i=start; i<=end; i++) {
+                                building.outdoor_avail.set(i, building.outdoor_avail.get(i)+1);
+                            }
+                        }
+
+                        // push building object to database
+                        reference.child("Buildings").child(building_name).setValue(building);
+                    }
+                }
+            }
+        });
+
+
+        update_database();
     }
 
     // TODO: change reservation time
@@ -321,6 +365,11 @@ public class UserActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void update_database() {
+        // update user to database
+        reference.child("Users").child(usr_id).setValue(user);
     }
 }
 
