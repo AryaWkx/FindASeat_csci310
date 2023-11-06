@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     DatabaseReference reference;
 
     private GoogleMap myMap;
-    private String building_name;
+    private String building_name = "Doheny Memorial Library (DML)";
     private boolean isLogin = false;
     private RelativeLayout layout;
     private String usrID;
@@ -57,11 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = getIntent();
         isLogin = intent.getBooleanExtra("isLogin", false);
         usrID = intent.getStringExtra("id");
-        username = intent.getStringExtra("username");
-        // log user ID
-        if (isLogin) {
-            Toast.makeText(getApplicationContext(), "Logged in as " + username, Toast.LENGTH_SHORT).show();
-        }
+
         setContentView(R.layout.activity_main);
         load_mapview();
 

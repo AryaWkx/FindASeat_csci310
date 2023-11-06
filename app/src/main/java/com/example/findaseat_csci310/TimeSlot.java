@@ -13,6 +13,12 @@ public class TimeSlot {
         this.availableSeats = availableSeats;
     }
 
+    public TimeSlot() {
+        this.time = null;
+        this.type = null;
+        this.availableSeats = 0;
+    }
+
     public String getTime() {
         return time;
     }

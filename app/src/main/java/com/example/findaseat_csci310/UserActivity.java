@@ -92,8 +92,8 @@ public class UserActivity extends AppCompatActivity {
                 return true;
             } else if (item.getItemId() == R.id.bottom_reservations) {
                 Intent intent2 = new Intent(getApplicationContext(), BuildingActivity.class);
-                intent2.putExtra("usrID", usr_id);
-                intent2.putExtra("building_name", "Taper Hall (THH)");
+                intent2.putExtra("id", usr_id);
+                intent2.putExtra("building_name", "Doheny Memorial Library (DML)");
                 startActivity(intent2);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();

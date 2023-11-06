@@ -47,6 +47,8 @@ public class BuildingActivity extends AppCompatActivity {
 
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
+
+        Log.d("Debug", "building name: " + buildingName);
         reference.child("Buildings").child(buildingName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -114,7 +116,7 @@ public class BuildingActivity extends AppCompatActivity {
                 return true;
             } else if (item.getItemId() == R.id.bottom_map) {
                 Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
-                intent2.putExtra("usrID", usrID);
+                intent2.putExtra("id", usrID);
                 intent2.putExtra("isLogin",true);
                 startActivity(intent2);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
