@@ -180,7 +180,8 @@
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:onClick="onClickManage"/>
 
                     <Button
                         android:id="@+id/cancel"
@@ -189,7 +190,8 @@
                         android:layout_height="40dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:onClick="onClickCancel"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

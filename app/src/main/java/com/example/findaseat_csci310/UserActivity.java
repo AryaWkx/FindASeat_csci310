@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,6 +106,33 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+    // TODO: cancel current reservation and put it into history
+    public void onClickCancel(View view) {
+        // Add current Reservation to the first element of history (need to shift previous reservations
+        // to the right and set history[0] = currentReservation)
+
+        // Set currentReservation = null
+    }
+
+    // TODO: change reservation time
+    public void onClickManage(View view) {
+        // create popup window
+
+        // read availability from database (can just retrieve an Arraylist of indoor(outdorr)_avail)
+
+        // display availability in the popup window
+
+        // user can select a time slot and click "confirm" to change reservation time
+
+        // if user clicks "cancel", close the popup window (can be written in a separate function)
+
+        // if user clicks "confirm", check if the selected time slot is valid (can be written in a separate function)
+
+        // if valid, write changes to database (profile and building), change display, and close the popup window
+
+        // if not valid, display error message and do nothing
+
+    }
     public void load_info() {
         // display user info card
         TextView name = (TextView) findViewById(R.id.name);
