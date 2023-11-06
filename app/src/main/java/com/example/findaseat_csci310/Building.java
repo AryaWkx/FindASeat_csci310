@@ -8,10 +8,9 @@ public class Building {
     public double lat;
     public double lng;
     public String name;
-//    public Vector<Integer> indoor_avail = new Vector<Integer>(26);
     public ArrayList<Integer> indoor_avail = new ArrayList<Integer>(26);
-//    public Vector<Integer> outdoor_avail = new Vector<Integer>(26);
     public ArrayList<Integer> outdoor_avail = new ArrayList<Integer>(26);
+    public List<TimeSlot> timeSlots;
 
     Building(String name, double lat, double lng, ArrayList<Integer> indoor_avail, ArrayList<Integer> outdoor_avail) {
         this.lat = lat;
