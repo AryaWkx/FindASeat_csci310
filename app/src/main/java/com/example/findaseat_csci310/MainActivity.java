@@ -46,34 +46,33 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        load_login();
-        load_building();
 
-//        addDummyBuidings();
-//
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-//
-//        FloatingActionButton menufab = findViewById(R.id.floatingActionButton1);
-//        FloatingActionButton reservefab = findViewById(R.id.floatingActionButton2);
-//        menufab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mode = true;
-//                menufab.setVisibility(View.INVISIBLE);
-//                reservefab.setVisibility(View.VISIBLE);
-//                Toast.makeText(getApplicationContext(), "Switched to reserve action mode", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        reservefab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mode = false;
-//                menufab.setVisibility(View.VISIBLE);
-//                reservefab.setVisibility(View.INVISIBLE);
-//                Toast.makeText(getApplicationContext(), "Switched to info display mode", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        addDummyBuidings();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        FloatingActionButton menufab = findViewById(R.id.floatingActionButton1);
+        FloatingActionButton reservefab = findViewById(R.id.floatingActionButton2);
+        menufab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mode = true;
+                menufab.setVisibility(View.INVISIBLE);
+                reservefab.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), "Switched to reserve action mode", Toast.LENGTH_SHORT).show();
+            }
+        });
+        reservefab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mode = false;
+                menufab.setVisibility(View.VISIBLE);
+                reservefab.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), "Switched to info display mode", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     void load_login() {
@@ -112,23 +111,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
-
-    }
-
-    void load_building() {
-        setContentView(R.layout.activity_building);
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewTimeSlots); // create a recycler view
-        Vector<TimeSlot> timeSlots = new Vector<TimeSlot>();
-        // some dummy inputs
-        timeSlots.add(new TimeSlot("9:00 AM", "In", 10));
-        timeSlots.add(new TimeSlot("10:00 AM", "In", 10));
-        timeSlots.add(new TimeSlot("11:00 AM", "In", 10));
-        timeSlots.add(new TimeSlot("12:00 AM", "In", 10));
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new TimeSlotAdapter(this, timeSlots));
-
 
     }
 
