@@ -11,4 +11,5 @@
     <color name="red_light">#D17676</color>
     <color name="green">#10CA0A</color>
     <color name="yellow">#FFD500</color>
+    <color name="material_dynamic_neutral70">#B3FFFFFF</color>
 </resources>

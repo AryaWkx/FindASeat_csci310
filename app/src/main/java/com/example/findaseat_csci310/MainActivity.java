@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void createPopupWindow() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.reserve_popup, null);
-        TextView buildingName = popupView.findViewById(R.id.reserved_name_field);
+        TextView buildingName = popupView.findViewById(R.id.building_name_field);
         buildingName.setText(building_name);
 
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -194,44 +194,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-    }
-    private void CreateManagePopUpwindow() {
-        LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView=inflater.inflate(R.layout.manage_popup,null);
-        TextView buildingName = popupView.findViewById(R.id.reserved_name_field);
-        int width=ViewGroup.LayoutParams.MATCH_PARENT;
-        int height=ViewGroup.LayoutParams.MATCH_PARENT;
-        boolean focusable=true;
-        PopupWindow popupWindow=new PopupWindow(popupView,width,height,focusable);
-        layout.post(new Runnable() {
-            @Override
-            public void run() {
-                popupWindow.showAtLocation(layout,Gravity.BOTTOM,0,0);
-
-            }
-        });
-        TextView Skip ,Gotit;
-        Skip=popupView.findViewById(R.id.Skip);
-        Gotit=popupView.findViewById(R.id.Gotit);
-        Skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-        Gotit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // write code anything you want
-            }
-        });
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                return true;
-            }
-        });
     }
 
     private void promptLogin() {

@@ -9,6 +9,8 @@ public class User {
     public String affiliation;
     public String pwd;
 
+    public Vector<Reservation> history;
+    public Reservation currentReservation;
 
     User(String e, String id, String n, String a, String p) {
         name = n;
@@ -16,6 +18,8 @@ public class User {
         email = e;
         affiliation = a;
         pwd = p;
+        history = new Vector<Reservation>();
+        currentReservation = null;
     }
 
     public String getName() {
