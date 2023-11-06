@@ -2,7 +2,6 @@ package com.example.findaseat_csci310;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String usrID;
     private String username;
 
+    private BottomNavigationView bottomNavigationView;
+
     private boolean mode = false; // 0 for info, 1 for reserve
 
     @Override
@@ -59,32 +60,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast.makeText(getApplicationContext(), "Logged in as " + username, Toast.LENGTH_SHORT).show();
         }
         setContentView(R.layout.activity_main);
+        load_mapview();
 
         // navigation bar selector
-//        BottomNavigationView bottomNavigationView = findViewById(R.id.Navigation);
-//        bottomNavigationView.setSelectedItemId(R.id.bottom_map);
-//        bottomNavigationView.setOnItemSelectedListener(item -> {
-//            switch (item.getItemId()) {
-//                case R.id.bottom_map:
-//                    return true;
-//                case R.id.bottom_profile:
-//                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
-//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//                    finish();
-//                    return true;
-//                case R.id.bottom_reservations:
-//                    if (isLogin) {
-//                        startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
-//                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//                        finish();
-//                    } else {
-//                        promptLogin();
-//                    }
-//                    return true;
-//            }
-//            return false;
-//        });
-        load_mapview();
+        bottomNavigationView = findViewById(R.id.Navigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_map);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_map) {
+                return true;
+            } else if (item.getItemId() == R.id.bottom_profile) {
+                if (isLogin) {
+                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                } else {
+                    promptLogin();
+                }
+                return true;
+            } else if (item.getItemId() == R.id.bottom_reservations) {
+                if (isLogin) {
+                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                } else {
+                    promptLogin();
+                }
+                return true;
+            }
+            return false;
+        });
     }
 
     void load_mapview() {
@@ -135,18 +139,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 // return the info of the marker
-                building_name = marker.getTitle();
                 if (!mode) {
                     marker.showInfoWindow();
                 } else {
-                    // TODO: jump to reserve page if logged in, else jump to login page
-                    if (isLogin) {
-                        layout = findViewById(R.id.main_layout);
-                        createPopupWindow();
-                    } else {
-                        promptLogin();
-                    }
-
+                    // jump to reserve page if logged in, else jump to login page
+                    reserveHandler(marker.getTitle());
                 }
                 return true;
             }
@@ -169,7 +166,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
+    private void reserveHandler(String name) {
+        if (isLogin) {
+            building_name = name;
+            layout = findViewById(R.id.main_layout);
+            createPopupWindow(name);
+        } else {
+            promptLogin();
+        }
+    }
     private void addDummyBuidings() {
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
@@ -205,11 +210,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         reference.child("Buildings").child("Parkside Residential Area").child("lng").setValue(-118.2899874);
     }
 
-    private void createPopupWindow() {
+    private void createPopupWindow(String name) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.reserve_popup, null);
         TextView buildingName = popupView.findViewById(R.id.building_name_field);
-        buildingName.setText(building_name);
+        buildingName.setText(name);
 
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -232,7 +237,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                 })
-                .setNegativeButton("Cancel", (dialog, id1) -> dialog.dismiss());
+                .setNegativeButton("Cancel", (dialog, id1) -> {
+                    dialog.dismiss();
+                    bottomNavigationView.setSelectedItemId(R.id.bottom_map);
+                });
         AlertDialog alert = builder.create();
         alert.show();
     }
