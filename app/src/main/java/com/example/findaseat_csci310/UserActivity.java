@@ -1,19 +1,27 @@
 package com.example.findaseat_csci310;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +38,6 @@ public class UserActivity extends AppCompatActivity {
     public User user;
 
     public String usr_id;
-    public Uri downloadUri;
     public FirebaseDatabase root;
     public DatabaseReference reference;
     private BottomNavigationView bottomNavigationView;
@@ -59,21 +66,20 @@ public class UserActivity extends AppCompatActivity {
             }
         });
         // Reference to an image file in Cloud Storage
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars/"+usr_id+".jpg");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars"+usr_id+".jpg");
         // Get the download URL
-        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<android.net.Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<android.net.Uri> task) {
-                if (task.isSuccessful()) {
-                    downloadUri = task.getResult();
-                    ImageView imageView = (ImageView) findViewById(R.id.avatar);
-                    imageView.setImageURI(downloadUri);
-                } else {
-                    // Handle failures
-                    Log.d("firebase", "Error getting avatar", task.getException());
-                }
-            }
+        ImageView imageView = findViewById(R.id.imageView);
+        storageReference.getBytes(1024*1024)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Log.d("firebase", "onSuccess: Got profile image");
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                        imageView.setImageBitmap(bitmap);
+                    }
         });
+
+
 
         // navigation bar selector
         bottomNavigationView = findViewById(R.id.Navigation);
@@ -103,15 +109,39 @@ public class UserActivity extends AppCompatActivity {
             return false;
         });
 
-
+        Button cancelButton = (Button) findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickCancel(v);
+                Log.d("debug", "cancel button clicked");
+            }
+        });
     }
 
-    // TODO: cancel current reservation and put it into history
     public void onClickCancel(View view) {
+        Log.d("debug", "onClickCancel called");
+        // pop up an alert dialog to confirm cancellation
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to cancel your reservation?")
+                .setCancelable(true)
+                .setPositiveButton("Yes", (dialog, id1) -> { cancelReserve(); dialog.dismiss(); });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void cancelReserve() {
         // Add current Reservation to the first element of history (need to shift previous reservations
         // to the right and set history[0] = currentReservation)
-
+        int size = user.history.size();
+        user.history.add(user.history.get(size-1));
+        for (int i=size-1; i>0; i--) {
+            user.history.set(i, user.history.get(i-1));
+        }
+        user.history.set(0, user.currentReservation);
         // Set currentReservation = null
+        user.currentReservation = null;
+        load_info();
     }
 
     // TODO: change reservation time
