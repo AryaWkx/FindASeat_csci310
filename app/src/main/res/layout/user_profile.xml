@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mainbkg"
-    tools:context=".UserActivity">
+    tools:context=".User">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="394dp"
@@ -21,11 +21,11 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="376dp"
-            android:layout_height="264dp"
+            android:id="@+id/cardView1"
+            android:layout_width="379dp"
+            android:layout_height="205dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="332dp"
+            android:layout_marginTop="436dp"
             android:layout_marginEnd="8dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="8dp"
@@ -39,13 +39,229 @@
             app:strokeColor="#E6E6FA"
             app:strokeWidth="2dp">
 
-            <ScrollView
-                android:layout_width="363dp"
-                android:layout_height="244dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name1"
+                        android:layout_width="154dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="building_name1" />
+
+                    <TextView
+                        android:id="@+id/reserved_time1"
+                        android:layout_width="178dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:text="reserved_time1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name2"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name2" />
+
+                    <TextView
+                        android:id="@+id/reserved_time2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name3"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name3" />
+
+                    <TextView
+                        android:id="@+id/reserved_time3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name4"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name4" />
+
+                    <TextView
+                        android:id="@+id/reserved_time4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time4" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name5"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name5" />
+
+                    <TextView
+                        android:id="@+id/reserved_time5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name6"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name6" />
+
+                    <TextView
+                        android:id="@+id/reserved_time6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time6" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name7"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name7" />
+
+                    <TextView
+                        android:id="@+id/reserved_time7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time7" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name8"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name8" />
+
+                    <TextView
+                        android:id="@+id/reserved_time8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time8" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name9"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name9" />
+
+                    <TextView
+                        android:id="@+id/reserved_time9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time9" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/building_name10"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="building_name10" />
+
+                    <TextView
+                        android:id="@+id/reserved_time10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="reserved_time10" />
+                </LinearLayout>
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/cardView2"
             android:layout_width="382dp"
             android:layout_height="167dp"
             android:layout_marginStart="8dp"
@@ -75,13 +291,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_info_label"><![CDATA[>
+                app:layout_constraintTop_toBottomOf="@+id/user_info_label"
+                tools:ignore="ExtraText">&gt;
 
-
-
-
-
-                ]]>
 
                 <TextView
                     android:id="@+id/name"
@@ -96,7 +308,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/ID"
+                    android:id="@+id/usc_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
@@ -119,7 +331,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/email_address"
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
@@ -131,6 +343,7 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
             <!-- user info end-->
 
         </androidx.cardview.widget.CardView>
@@ -142,24 +355,9 @@
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:src="@drawable/avatar"
+            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="147dp"
             tools:layout_editor_absoluteY="0dp" />
-
-        <Button
-            android:id="@+id/manage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Manage"
-            tools:layout_editor_absoluteX="48dp"
-            tools:layout_editor_absoluteY="596dp" />
-
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            tools:layout_editor_absoluteX="247dp"
-            tools:layout_editor_absoluteY="596dp" />
 
         <TextView
             android:id="@+id/reserve_history"
@@ -173,9 +371,70 @@
             android:textSize="24sp"
             android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="265dp" />
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="362dp" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="112dp"
+            android:layout_height="40dp"
+            android:text="Cancel"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="240dp"
+            tools:layout_editor_absoluteY="332dp" />
+
+        <Button
+            android:id="@+id/manage"
+            android:layout_width="112dp"
+            android:layout_height="40dp"
+            android:text="Manage"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="35dp"
+            tools:layout_editor_absoluteY="332dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="393dp"
+            android:layout_height="51dp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="-1dp"
+            tools:layout_editor_absoluteY="280dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/activated_reserved_buildingname"
+                    android:layout_width="194dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="activated_reserved_buildingname" />
+
+                <TextView
+                    android:id="@+id/activated_reserved_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="activated_reserved_time" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/reserved_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reservation Time"
+            android:textAlignment="viewEnd"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textStyle="italic"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="240dp"
+            tools:layout_editor_absoluteY="408dp" />
 
         <TextView
             android:id="@+id/building_name"
@@ -184,21 +443,25 @@
             android:fontFamily="sans-serif"
             android:text="Building Name"
             android:textAlignment="viewStart"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="#000000"
+            android:textStyle="italic"
+            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="35dp"
-            tools:layout_editor_absoluteY="306dp" />
+            tools:layout_editor_absoluteY="408dp" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reservation Time"
-            android:textAlignment="viewEnd"
+            android:id="@+id/activated_reserve"
+            android:layout_width="393dp"
+            android:layout_height="28dp"
+            android:text="Activated Reservation"
+            android:textAlignment="center"
             android:textAllCaps="true"
-            android:textColor="#000000"
-            tools:layout_editor_absoluteX="240dp"
-            tools:layout_editor_absoluteY="306dp" />
+            android:textColor="#26C62E"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="258dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

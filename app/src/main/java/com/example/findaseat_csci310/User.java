@@ -17,4 +17,27 @@ public class User {
         affiliation = a;
         pwd = p;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUsc_id() {
+        return usc_id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAffiliation() {
+        return affiliation;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+
+
 }

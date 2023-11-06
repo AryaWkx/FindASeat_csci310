@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="Building_name_field"
+            android:text="reserved_name_field"
             android:textAlignment="center"
             android:textSize="36dp" />
 
@@ -32,7 +32,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="15dp"
-            android:text="@string/reserve_msg"
+            android:text="Change your reservation time slots."
             android:textSize="20dp" />
 
         <RelativeLayout
