@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String usrID;
     private String username;
 
+    private PopupWindow popupWindow;
+
     private BottomNavigationView bottomNavigationView;
 
     private boolean mode = false; // 0 for info, 1 for reserve
@@ -234,14 +236,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean foucsable = true;
-        PopupWindow popupWindow = new PopupWindow(popupView, width, height, foucsable);
+        popupWindow = new PopupWindow(popupView, width, height, foucsable);
         layout.post(new Runnable() {
             @Override
             public void run() {
                 popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
             }
         });
-
     }
 
     private void promptLogin() {
@@ -269,5 +270,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         u.history.add(r1);
         u.history.add(r2);
         reference.child("Users").child("0000000001").setValue(u);
+    }
+
+    public void onClickYes(View view) {
+        Intent intent2 = new Intent(getApplicationContext(), BuildingActivity.class);
+        intent2.putExtra("id", usrID);
+        intent2.putExtra("building_name", building_name);
+        startActivity(intent2);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+    public void onClickBack(View view) {
+        popupWindow.dismiss();
     }
 }

@@ -40,6 +40,7 @@ public class BuildingActivity extends AppCompatActivity {
         usrID = intent.getStringExtra("id");
         // get building name
         buildingName = intent.getStringExtra("building_name");
+        Log.d("intent", "building name: " + buildingName);
 
 
         // load data from firebase database

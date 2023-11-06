@@ -44,7 +44,7 @@
             android:layout_marginBottom="15dp">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/reserve_yes"
                 android:layout_width="80dp"
                 android:layout_height="35dp"
                 android:layout_alignParentStart="true"
@@ -55,10 +55,12 @@
                 android:gravity="center"
                 android:text="Yes"
                 android:textAlignment="center"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:clickable="true"
+                android:onClick="onClickYes"/>
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/reserve_back"
                 android:layout_width="80dp"
                 android:layout_height="35dp"
                 android:layout_alignParentTop="true"
@@ -68,7 +70,9 @@
                 android:gravity="center"
                 android:text="Back"
                 android:textAlignment="center"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:clickable="true"
+                android:onClick="onClickBack"/>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
