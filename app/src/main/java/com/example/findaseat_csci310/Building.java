@@ -41,6 +41,7 @@ public class Building {
         for (int i=0; i<26; i++){
             timeSlots.add(new TimeSlot(String.valueOf(i+8)+":30-"+String.valueOf(i+8)+":59", "Outdoor", outdoor_avail.get(i)));
         }
+        this.timeSlots = timeSlots;
         return timeSlots;
     };
 }

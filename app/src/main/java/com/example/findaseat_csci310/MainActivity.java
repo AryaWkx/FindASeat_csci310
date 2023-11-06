@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // get intent from login page
         Intent intent = getIntent();
         isLogin = intent.getBooleanExtra("isLogin", false);
-        usrID = intent.getStringExtra("usrID");
+        usrID = intent.getStringExtra("id");
         username = intent.getStringExtra("username");
         // log user ID
         if (isLogin) {
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         load_mapview();
 
 //        addDummyBuidings();
+//        addDummyUser();
 
         // navigation bar selector
         bottomNavigationView = findViewById(R.id.Navigation);
@@ -74,7 +76,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             } else if (item.getItemId() == R.id.bottom_profile) {
                 if (isLogin) {
-                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+                    Intent intent1 = new Intent(getApplicationContext(), UserActivity.class);
+                    intent1.putExtra("id", usrID);
+                    Log.d("intent", "usrID given out: " + usrID);
+                    startActivity(intent1);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();
                 } else {
@@ -83,7 +88,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             } else if (item.getItemId() == R.id.bottom_reservations) {
                 if (isLogin) {
-                    startActivity(new Intent(getApplicationContext(), BuildingActivity.class));
+                    Intent intent2 = new Intent(getApplicationContext(), BuildingActivity.class);
+                    intent2.putExtra("id", usrID);
+                    intent2.putExtra("building_name", building_name);
+                    startActivity(intent2);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();
                 } else {
@@ -224,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void createPopupWindow(String name) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.reserve_popup, null);
-        TextView buildingName = popupView.findViewById(R.id.building_name_field);
+        TextView buildingName = popupView.findViewById(R.id.reserved_name_field);
         buildingName.setText(name);
 
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -254,5 +262,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void addDummyUser() {
+        root = FirebaseDatabase.getInstance();
+        reference = root.getReference();
+        User u = new User("email@gmail.com", "0000000001", "test", "Student", "12345678");
+        Reservation r1 = new Reservation("Taper Hall (THH)", 4, 5, "indoor");
+        Reservation r2 = new Reservation("Taper Hall (THH)", 11, 13, "outdoor");
+        u.history.add(r1);
+        u.history.add(r2);
+        reference.child("Users").child("0000000001").setValue(u);
     }
 }

@@ -21,22 +21,19 @@
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="Building_name_field"
+            android:text="reserved_name_field"
             android:textAlignment="center"
-            android:textSize="36dp"
-            android:fontFamily="sans-serif-smallcaps" />
+            android:textSize="36dp" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/reserve_msg"
-            android:textSize="20dp"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="#A6A6A6"/>
+            android:layout_marginRight="15dp"
+            android:text="Change your reservation time slots."
+            android:textSize="20dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"

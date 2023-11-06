@@ -62,7 +62,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/building_info_label">
 
                 <TextView
-                    android:id="@+id/building_name"
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
@@ -70,7 +70,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/building_name_short"
+                    android:id="@+id/ID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
@@ -78,7 +78,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/building_address"
+                    android:id="@+id/email_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
