@@ -1,5 +1,6 @@
 package com.example.findaseat_csci310;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class User {
@@ -9,8 +10,18 @@ public class User {
     public String affiliation;
     public String pwd;
 
-    public Vector<Reservation> history;
+    public ArrayList<Reservation> history;
     public Reservation currentReservation;
+
+    User() {
+        name = null;
+        usc_id = null;
+        email = null;
+        affiliation = null;
+        pwd = null;
+        history = new ArrayList<Reservation>();
+        currentReservation = null;
+    }
 
     User(String e, String id, String n, String a, String p) {
         name = n;
@@ -18,7 +29,7 @@ public class User {
         email = e;
         affiliation = a;
         pwd = p;
-        history = new Vector<Reservation>();
+        history = new ArrayList<Reservation>();
         currentReservation = null;
     }
 

@@ -100,7 +100,7 @@ import com.google.firebase.database.FirebaseDatabase;
          } else {//TODO: go to main page
              Intent intent = new Intent(getActivity(), MainActivity.class);
              intent.putExtra("isLogin", true);
-             intent.putExtra("userID", userid);
+             intent.putExtra("id", userid);
              intent.putExtra("username", username);
              startActivity(intent);
          }
