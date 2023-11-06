@@ -29,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 import java.util.Map;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         setContentView(R.layout.activity_main);
         load_mapview();
+
+//        addDummyBuidings();
 
         // navigation bar selector
         bottomNavigationView = findViewById(R.id.Navigation);
@@ -178,36 +181,43 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void addDummyBuidings() {
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
+
+        Vector<Integer> indoor = new Vector<Integer>(26);
+        Vector<Integer> outdoor = new Vector<Integer>(26);
+        for (int i=0; i<26; i++){
+            indoor.add(10);
+            outdoor.add(2);
+        }
         // Taper Hall
-        reference.child("Buildings").child("Taper Hall (THH)").child("lat").setValue(34.0222316);
-        reference.child("Buildings").child("Taper Hall (THH)").child("lng").setValue(-118.2845691);
+        Building thh = new Building("Taper Hall (THH)", 34.0222316, -118.2845691, indoor, outdoor);
+        reference.child("Buildings").child("Taper Hall (THH)").setValue(thh);
         // Leavey Library
-        reference.child("Buildings").child("Leavey Library (LVL)").child("lat").setValue(34.0217200);
-        reference.child("Buildings").child("Leavey Library (LVL)").child("lng").setValue(-118.2828376);
+        Building lvl = new Building("Leavey Library (LVL)", 34.0217200, -118.2828376, indoor, outdoor);
+        reference.child("Buildings").child("Leavey Library (LVL)").setValue(lvl);
         // Doheny Memorial Library
-        reference.child("Buildings").child("Doheny Memorial Library (DML)").child("lat").setValue(34.0201440);
-        reference.child("Buildings").child("Doheny Memorial Library (DML)").child("lng").setValue(-118.2837366);
+        Building dml = new Building("Doheny Memorial Library (DML)", 34.0201440, -118.2837366, indoor, outdoor);
+        reference.child("Buildings").child("Doheny Memorial Library (DML)").setValue(dml);
         // Science & Engineering Library
-        reference.child("Buildings").child("Science & Engineering Library (SEL)").child("lat").setValue(34.0196113);
-        reference.child("Buildings").child("Science & Engineering Library (SEL)").child("lng").setValue(-118.2887994);
+        Building sel = new Building("Science & Engineering Library (SEL)", 34.0196113, -118.2887994, indoor, outdoor);
+        reference.child("Buildings").child("Science & Engineering Library (SEL)").setValue(sel);
         // Kaprielian Hall
-        reference.child("Buildings").child("Kaprielian Hall (KAP)").child("lat").setValue(34.0224902);
-        reference.child("Buildings").child("Kaprielian Hall (KAP)").child("lng").setValue(-118.2910134);
+        Building kap = new Building("Kaprielian Hall (KAP)", 34.0224902, -118.2910134, indoor, outdoor);
+        reference.child("Buildings").child("Kaprielian Hall (KAP)").setValue(kap);
         // Fertitta Hall
-        reference.child("Buildings").child("Fertitta Hall (JFF)").child("lat").setValue(34.0187263);
-        reference.child("Buildings").child("Fertitta Hall (JFF)").child("lng").setValue(-118.2824098);
+        Building jff = new Building("Fertitta Hall (JFF)", 34.0187263, -118.2824098, indoor, outdoor);
+        reference.child("Buildings").child("Fertitta Hall (JFF)").setValue(jff);
         // Hoffman Hall
-        reference.child("Buildings").child("Hoffman Hall (HOH)").child("lat").setValue(34.0187226);
-        reference.child("Buildings").child("Hoffman Hall (HOH)").child("lng").setValue(-118.2852340);
+        Building hoh = new Building("Hoffman Hall (HOH)", 34.0187226, -118.2852340, indoor, outdoor);
+        reference.child("Buildings").child("Hoffman Hall (HOH)").setValue(hoh);
         // USC Village
-        reference.child("Buildings").child("USC Village").child("lat").setValue(34.0252800);
-        reference.child("Buildings").child("USC Village").child("lng").setValue(-118.2849921);
+        Building usc = new Building("USC Village", 34.0252800, -118.2849921, indoor, outdoor);
+        reference.child("Buildings").child("USC Village").setValue(usc);
         // Grace Ford Salvatori Hall
-        reference.child("Buildings").child("Grace Ford Salvatori Hall (GFS)").child("lat").setValue(34.0213012);
-        reference.child("Buildings").child("Grace Ford Salvatori Hall (GFS)").child("lng").setValue(-118.2880528);
+        Building gfs = new Building("Grace Ford Salvatori Hall (GFS)", 34.0213012, -118.2880528, indoor, outdoor);
+        reference.child("Buildings").child("Grace Ford Salvatori Hall (GFS)").setValue(gfs);
         // Parkside Residential Area
-        reference.child("Buildings").child("Parkside Residential Area").child("lat").setValue(34.0188311);
-        reference.child("Buildings").child("Parkside Residential Area").child("lng").setValue(-118.2899874);
+        Building prk = new Building("Parkside Residential Area", 34.0188311, -118.2899874, indoor, outdoor);
+        reference.child("Buildings").child("Parkside Residential Area").setValue(prk);
     }
 
     private void createPopupWindow(String name) {
