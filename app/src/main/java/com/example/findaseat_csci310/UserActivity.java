@@ -2,6 +2,7 @@ package com.example.findaseat_csci310;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseError;
 
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class UserActivity extends AppCompatActivity {
@@ -31,11 +34,35 @@ public class UserActivity extends AppCompatActivity {
 
                 } else {
                     if (String.valueOf(task.getResult().getValue()) != null) {
+//                        user.name = String.valueOf(task.getResult().child("name").getValue());
+//                        user.usc_id = String.valueOf(task.getResult().child("usc_id").getValue());
+//                        user.affiliation = String.valueOf(task.getResult().child("affiliation").getValue());
+//                        user.email = String.valueOf(task.getResult().child("email").getValue());
+//                        user.currentReservation.in_out = String.valueOf(task.getResult().child("currentReservation")
+//                                .child("in_out").getValue());
+//                        user.currentReservation.start_time = Integer.parseInt(String.valueOf(task.getResult().child("currentReservation")
+//                                .child("start_time").getValue()));
+//                        user.currentReservation.end_time = Integer.parseInt(String.valueOf(task.getResult().child("currentReservation")
+//                                .child("end_time").getValue()));
+//                        user.currentReservation.buiding_name = String.valueOf(task.getResult().child("currentReservation")
+//                                .child("buiding_name").getValue());
+                        user = task.getResult().getValue(User.class);
 
                     }
                 }
             }
         });
+        // Reference to an image file in Cloud Storage
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars/[user_id].jpg");
+
+// ImageView in your Activity
+        ImageView imageView = findViewById(R.id.imageView);
+
+// Download directly from StorageReference using Glide
+// (See MyAppGlideModule for Loader registration)
+        Glide.with(context)
+                .load(storageReference)
+                .into(imageView);
     }
 
 
