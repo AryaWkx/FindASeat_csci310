@@ -9,12 +9,16 @@ public class User {
     public String affiliation;
     public String pwd;
 
+    public Vector<Reservation> history;
+    public Reservation currentReservation;
 
-    User(String n, String id, String e, String a, String p) {
+    User(String e, String id, String n, String a, String p) {
         name = n;
         usc_id = id;
         email = e;
         affiliation = a;
         pwd = p;
+        history = new Vector<Reservation>();
+        currentReservation = null;
     }
 }
