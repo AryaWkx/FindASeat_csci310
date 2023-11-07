@@ -8,15 +8,22 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.gridlayout.widget.GridLayout;
 
 
 import com.bumptech.glide.Glide;
@@ -34,18 +41,23 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 
 public class UserActivity extends AppCompatActivity {
     public User user;
-
+    private ArrayList<TextView> cell_tvs;
     public String usr_id;
     public FirebaseDatabase root;
     public DatabaseReference reference;
     private BottomNavigationView bottomNavigationView;
     private String in_out;
     private Building building;
+
+    private PopupWindow popupWindow;
+    private RelativeLayout layout;
+    private ArrayList<Boolean> selected_slots;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +82,10 @@ public class UserActivity extends AppCompatActivity {
                 }
             }
         });
+
+        selected_slots = new ArrayList<>(Collections.nCopies(26, false));
+
+
         // Reference to an image file in Cloud Storage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars"+usr_id+".jpg");
         // Get the download URL
@@ -122,6 +138,7 @@ public class UserActivity extends AppCompatActivity {
                 Log.d("debug", "cancel button clicked");
             }
         });
+
     }
 
     public void onClickCancel(View view) {
@@ -190,23 +207,166 @@ public class UserActivity extends AppCompatActivity {
 
     // TODO: change reservation time
     public void onClickManage(View view) {
-        // create popup window
+        if (user.currentReservation == null) {
+            Toast.makeText(getApplicationContext(), "No current reservation", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        // read availability from database (can just retrieve an Arraylist of indoor(outdorr)_avail)
+        // create popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.manage_popup, null);
+        TextView buildingName = popupView.findViewById(R.id.reserved_name_field);
+        buildingName.setText(building.name);
+
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean foucsable = true;
+        popupWindow = new PopupWindow(popupView, width, height, foucsable);
+        layout = (RelativeLayout) findViewById(R.id.profile_layout);
+        layout.post(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+            }
+        });
 
         // display availability in the popup window
+        ArrayList<Integer> avail;
+        if (user.currentReservation.getInOut().equals("indoor")) {
+            // display indoor availability
+            avail = building.indoor_avail;
+        } else {
+            // display outdoor availability
+            avail = building.outdoor_avail;
+        }
+        cell_tvs = new ArrayList<TextView>();
+        GridLayout grid = (GridLayout) popupView.findViewById(R.id.gridLayout01);
+        Log.d("debug", "grid: "+grid.toString());
 
-        // user can select a time slot and click "confirm" to change reservation time
+        LayoutInflater li = LayoutInflater.from(this);
+        for (int i = 0; i<13; i++) {
+            for (int j=0; j<2; j++) {
+                TextView tv = (TextView) li.inflate(R.layout.custom_cell_layout, grid, false);
+                if (avail.get(i*2+j) >0) {
+                    tv.setBackground(getResources().getDrawable(R.drawable.edittext_bkg));
+                    tv.setClickable(true);
+                }
+                else if (avail.get(i*2+j) == 0) {
+                    tv.setBackground(getResources().getDrawable(R.drawable.edittext_error_bkg));
+                    tv.setClickable(false);
+                }
 
-        // if user clicks "cancel", close the popup window (can be written in a separate function)
+                if (j == 0) {
+                    String time = String.valueOf(i+8)+":00-"+String.valueOf(i+8)+":29";
+                    tv.setText(time);
+                } else {
+                    String time = String.valueOf(i+8)+":30-"+String.valueOf(i+8)+":59";
+                    tv.setText(time);
+                }
+                tv.setOnClickListener(this::onClickTV);
 
-        // if user clicks "confirm", check if the selected time slot is valid (can be written in a separate function)
+                GridLayout.LayoutParams lp = (GridLayout.LayoutParams) tv.getLayoutParams();
+                lp.rowSpec = GridLayout.spec(i);
+                lp.columnSpec = GridLayout.spec(j);
 
-        // if valid, write changes to database (profile and building), change display, and close the popup window
+                grid.addView(tv, lp);
+                cell_tvs.add(tv);
+            }
+        }
 
-        // if not valid, display error message and do nothing
-
+        // if user clicks "cancel", close the popup window
+        Button backButton = popupView.findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
+    private int findIndexOfCellTextView(TextView tv) {
+        for (int n=0; n<cell_tvs.size(); n++) {
+            if (cell_tvs.get(n) == tv)
+                return n;
+        }
+        return -1;
+    }
+
+    public void onClickConfirm(View view) {
+        // check if the selected time slot is valid
+        boolean isValid = true;
+        int consecutiveCnt = 0;
+        boolean blockFound = false;
+        int start = 0;
+        int end = 0;
+        for (int i=0; i<selected_slots.size(); i++) {
+            if (selected_slots.get(i)) {
+                consecutiveCnt++;
+                if (consecutiveCnt == 1) {
+                    start = i;
+                }
+                if (consecutiveCnt > 4) {
+                    isValid = false;
+                }
+                end = i;
+            } else {
+                if (consecutiveCnt > 0 && blockFound) {
+                    isValid = false;
+                } else if (consecutiveCnt >0) {
+                    blockFound = true;
+                    consecutiveCnt = 0;
+                }
+            }
+        }
+        if (!isValid) {
+            Toast.makeText(getApplicationContext(), "Invalid time slot selection", Toast.LENGTH_SHORT).show();
+        } else {
+            ArrayList<Integer> avail;
+            if (user.currentReservation.in_out.equals("indoor")) {
+                // display indoor availability
+                avail = building.indoor_avail;
+            } else {
+                // display outdoor availability
+                avail = building.outdoor_avail;
+            }
+
+            for (int i=user.currentReservation.start_time; i<=user.currentReservation.end_time; i++) {
+                avail.set(i, avail.get(i)+1);
+            }
+            for (int i=start; i<=end; i++) {
+                avail.set(i, avail.get(i)-1);
+            }
+
+            if (user.currentReservation.in_out.equals("indoor")) {
+                // display indoor availability
+                building.indoor_avail = avail;
+            } else {
+                // display outdoor availability
+                building.outdoor_avail = avail;
+            }
+
+            // update building object
+            reference.child("Buildings").child(building.name).setValue(building);
+            // update user object
+            user.currentReservation.start_time = start;
+            user.currentReservation.end_time = end;
+            reference.child("Users").child(usr_id).setValue(user);
+            load_info();
+            popupWindow.dismiss();
+        }
+    }
+
+    private void onClickTV(View view) {
+        TextView tv = (TextView) view;
+        int idx = findIndexOfCellTextView(tv);
+        if (!selected_slots.get(idx)) { // slot is not selected
+            tv.setBackground(getResources().getDrawable(R.drawable.edittext_selected_bkg));
+            selected_slots.set(idx, true);
+        } else { // slot is selected
+            tv.setBackground(getResources().getDrawable(R.drawable.edittext_bkg));
+            selected_slots.set(idx, false);
+        }
+    }
+
     public void load_info() {
         // display user info card
         TextView name = (TextView) findViewById(R.id.name);
@@ -224,11 +384,30 @@ public class UserActivity extends AppCompatActivity {
             current_reservation.setText(user.currentReservation.getBuilding());
             TextView current_reservation_time = (TextView) findViewById(R.id.activated_reserved_time);
             current_reservation_time.setText(user.currentReservation.getTime());
+            TextView in_out = (TextView) findViewById(R.id.activated_reserved_indoor);
+            in_out.setText(user.currentReservation.getInOut());
         } else {
             TextView current_reservation = (TextView) findViewById(R.id.activated_reserved_buildingname);
             current_reservation.setText("No Current Reservation");
             TextView current_reservation_time = (TextView) findViewById(R.id.activated_reserved_time);
             current_reservation_time.setText("");
+            TextView in_out = (TextView) findViewById(R.id.activated_reserved_indoor);
+            in_out.setText("");
+        }
+        if (user.currentReservation != null) {
+            reference.child("Buildings").child(user.currentReservation.getBuilding()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (!task.isSuccessful()) {
+                        Log.e("firebase", "Error getting data", task.getException());
+
+                    } else {
+                        if (String.valueOf(task.getResult().getValue()) != null) {
+                            building = task.getResult().getValue(Building.class);
+                        }
+                    }
+                }
+            });
         }
 
         // display past reservation card

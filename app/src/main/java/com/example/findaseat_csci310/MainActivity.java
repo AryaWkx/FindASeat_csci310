@@ -267,8 +267,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         User u = new User("email@gmail.com", "0000000001", "test", "Student", "12345678");
         Reservation r1 = new Reservation("Taper Hall (THH)", 4, 5, "indoor");
         Reservation r2 = new Reservation("Taper Hall (THH)", 11, 13, "outdoor");
+        Reservation r3 = new Reservation("Leavey Library (LVL)", 4, 5, "indoor");
         u.history.add(r1);
         u.history.add(r2);
+        u.currentReservation = r3;
         reference.child("Users").child("0000000001").setValue(u);
     }
 
