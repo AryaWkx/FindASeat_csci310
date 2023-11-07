@@ -160,11 +160,18 @@ public class UserActivity extends AppCompatActivity {
         // Add current Reservation to the first element of history (need to shift previous reservations
         // to the right and set history[0] = currentReservation)
         int size = user.history.size();
-        user.history.add(user.history.get(size-1));
+        if (size != 0) {
+            user.history.add(user.history.get(size-1));
+        }
         for (int i=size-1; i>0; i--) {
             user.history.set(i, user.history.get(i-1));
         }
-        user.history.set(0, user.currentReservation);
+        if (size != 0) {
+            user.history.set(0, user.currentReservation);
+        }
+        else {
+            user.history.add(user.currentReservation);
+        }
         // Set currentReservation = null
         user.currentReservation = null;
         load_info();

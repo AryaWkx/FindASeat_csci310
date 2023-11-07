@@ -34,11 +34,11 @@ public class Building {
         List<TimeSlot> timeSlots = new Vector<TimeSlot>(52);
         // add 26 indoor time slots to the list
         for (int i=0; i<26; i++){
-            timeSlots.add(new TimeSlot(String.valueOf(i+8)+":00-"+String.valueOf(i+8)+":29", "Indoor", indoor_avail.get(i)));
+            timeSlots.add(new TimeSlot(String.valueOf(i+8)+":00-"+String.valueOf(i+8)+":29", "Indoor", indoor_avail.get(i), i));
         }
         // add 26 outdoor time slots to the list
         for (int i=0; i<26; i++){
-            timeSlots.add(new TimeSlot(String.valueOf(i+8)+":30-"+String.valueOf(i+8)+":59", "Outdoor", outdoor_avail.get(i)));
+            timeSlots.add(new TimeSlot(String.valueOf(i+8)+":30-"+String.valueOf(i+8)+":59", "Outdoor", outdoor_avail.get(i), i+26));
         }
         this.timeSlots = timeSlots;
         return timeSlots;

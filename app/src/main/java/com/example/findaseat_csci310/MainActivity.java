@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             promptLogin();
         }
     }
-    private void addDummyBuidings() {
+    private void addDummyBuildings() {
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
 
