@@ -1,5 +1,6 @@
 package com.example.findaseat_csci310;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -45,15 +46,18 @@ import java.util.Collections;
 import java.util.Map;
 
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends Activity {
     public User user;
     private ArrayList<TextView> cell_tvs;
     public String usr_id;
     public FirebaseDatabase root;
     public DatabaseReference reference;
+
+    public int new_start;
+    public int new_end;
     private BottomNavigationView bottomNavigationView;
     private String in_out;
-    private Building building;
+    public Building building;
 
     private PopupWindow popupWindow;
     private RelativeLayout layout;
@@ -162,23 +166,8 @@ public class UserActivity extends AppCompatActivity {
     public void cancelReserve() {
         // Add current Reservation to the first element of history (need to shift previous reservations
         // to the right and set history[0] = currentReservation)
-        int size = user.history.size();
-        if (size != 0) {
-            user.history.add(user.history.get(size-1));
-        }
-        for (int i=size-1; i>0; i--) {
-            user.history.set(i, user.history.get(i-1));
-        }
-        if (size != 0) {
-            user.history.set(0, user.currentReservation);
-        }
-        else {
-            user.history.add(user.currentReservation);
-        }
-        // Set currentReservation = null
-        user.currentReservation = null;
+        cancel();
         load_info();
-
 
         // update building database
         String building_name = user.history.get(0).getBuilding();
@@ -215,7 +204,7 @@ public class UserActivity extends AppCompatActivity {
         update_database();
     }
 
-    // TODO: change reservation time
+
     public void onClickManage(View view) {
         if (user.currentReservation == null) {
             Toast.makeText(getApplicationContext(), "No current reservation", Toast.LENGTH_SHORT).show();
@@ -303,30 +292,8 @@ public class UserActivity extends AppCompatActivity {
 
     public void onClickConfirm(View view) {
         // check if the selected time slot is valid
-        boolean isValid = true;
-        int consecutiveCnt = 0;
-        boolean blockFound = false;
-        int start = 0;
-        int end = 0;
-        for (int i=0; i<selected_slots.size(); i++) {
-            if (selected_slots.get(i)) {
-                consecutiveCnt++;
-                if (consecutiveCnt == 1) {
-                    start = i;
-                }
-                if (consecutiveCnt > 4) {
-                    isValid = false;
-                }
-                end = i;
-            } else {
-                if (consecutiveCnt > 0 && blockFound) {
-                    isValid = false;
-                } else if (consecutiveCnt >0) {
-                    blockFound = true;
-                    consecutiveCnt = 0;
-                }
-            }
-        }
+        boolean isValid = checkConsecutiveReservation(selected_slots) && checkTotalReservation(selected_slots);
+
         if (!isValid) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Invalid Timeslot Selected")
@@ -335,35 +302,14 @@ public class UserActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
         } else {
-            ArrayList<Integer> avail;
-            if (user.currentReservation.in_out.equals("indoor")) {
-                // display indoor availability
-                avail = building.indoor_avail;
-            } else {
-                // display outdoor availability
-                avail = building.outdoor_avail;
-            }
-
-            for (int i=user.currentReservation.start_time; i<=user.currentReservation.end_time; i++) {
-                avail.set(i, avail.get(i)+1);
-            }
-            for (int i=start; i<=end; i++) {
-                avail.set(i, avail.get(i)-1);
-            }
-
-            if (user.currentReservation.in_out.equals("indoor")) {
-                // display indoor availability
-                building.indoor_avail = avail;
-            } else {
-                // display outdoor availability
-                building.outdoor_avail = avail;
-            }
+            addOldAvail();
+            deleteNewAvail();
 
             // update building object
             reference.child("Buildings").child(building.name).setValue(building);
             // update user object
-            user.currentReservation.start_time = start;
-            user.currentReservation.end_time = end;
+            user.currentReservation.start_time = new_start;
+            user.currentReservation.end_time = new_end;
             reference.child("Users").child(usr_id).setValue(user);
             load_info();
             popupWindow.dismiss();
@@ -564,6 +510,114 @@ public class UserActivity extends AppCompatActivity {
     public void update_database() {
         // update user to database
         reference.child("Users").child(usr_id).setValue(user);
+    }
+
+    public boolean checkConsecutiveReservation(ArrayList<Boolean> slots) {
+        boolean isValid = true;
+        int consecutiveCnt = 0;
+        boolean blockFound = false;
+        new_start = 0;
+        new_end = 0;
+        for (int i=0; i<slots.size(); i++) {
+            if (slots.get(i)) {
+                consecutiveCnt++;
+                if (consecutiveCnt == 1) {
+                    new_start = i;
+                }
+                if (consecutiveCnt > 4) {
+                    isValid = false;
+                }
+                new_end = i;
+            } else {
+                if (consecutiveCnt > 0 && blockFound) {
+                    isValid = false;
+                } else if (consecutiveCnt >0) {
+                    blockFound = true;
+                    consecutiveCnt = 0;
+                }
+            }
+        }
+        return isValid;
+    }
+
+    public boolean checkTotalReservation(ArrayList<Boolean> slots) {
+        boolean isValid = true;
+        int totalCnt = 0;
+        for (int i=0; i<slots.size(); i++) {
+            if (slots.get(i)) {
+                totalCnt++;
+                if (totalCnt >= 5) {
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+        return isValid;
+    }
+    public void cancel() {
+        int size = user.history.size();
+        if (size != 0) {
+            user.history.add(user.history.get(size-1));
+        }
+        for (int i=size-1; i>0; i--) {
+            user.history.set(i, user.history.get(i-1));
+        }
+        if (size != 0) {
+            user.history.set(0, user.currentReservation);
+        }
+        else {
+            user.history.add(user.currentReservation);
+        }
+        // Set currentReservation = null
+        user.currentReservation = null;
+    }
+
+    public void addOldAvail() {
+        ArrayList<Integer> avail;
+        String in_out = user.currentReservation.in_out;
+        if (in_out.equals("indoor")) {
+            // display indoor availability
+            avail = building.indoor_avail;
+        } else {
+            // display outdoor availability
+            avail = building.outdoor_avail;
+        }
+
+        for (int i=user.currentReservation.start_time; i<=user.currentReservation.end_time; i++) {
+            avail.set(i, avail.get(i)+1);
+        }
+
+        if (in_out.equals("indoor")) {
+            // display indoor availability
+            building.indoor_avail = avail;
+        } else {
+            // display outdoor availability
+            building.outdoor_avail = avail;
+        }
+    }
+
+    public void deleteNewAvail() {
+        ArrayList<Integer> avail;
+        String in_out = user.currentReservation.in_out;
+        if (in_out.equals("indoor")) {
+            // display indoor availability
+            avail = building.indoor_avail;
+        } else {
+            // display outdoor availability
+            avail = building.outdoor_avail;
+        }
+
+        for (int i = new_start; i <= new_end; i++) {
+            avail.set(i, avail.get(i) - 1);
+        }
+
+        if (in_out.equals("indoor")) {
+            // display indoor availability
+            building.indoor_avail = avail;
+        } else {
+            // display outdoor availability
+            building.outdoor_avail = avail;
+        }
     }
 }
 

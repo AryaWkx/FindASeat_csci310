@@ -181,7 +181,7 @@ public class SignupTabFragment extends Fragment {
                 });
 
     }
-    public boolean isEmailValid(String email) {
+    public static boolean isEmailValid(String email) {
 
         String email_pattern = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(email_pattern);
@@ -195,7 +195,7 @@ public class SignupTabFragment extends Fragment {
         return true;
     }
 
-    public boolean isIDValid(String id) {
+    public static boolean isIDValid(String id) {
 
         if (id == null) {
             return false;
@@ -206,16 +206,14 @@ public class SignupTabFragment extends Fragment {
         return true;
     }
 
-    public boolean isAffValid(String aff) {
+    public static boolean isAffValid(String aff) {
         if (aff.equals("Student") || aff.equals("Faculty")) {
-            Log.i("MyTag", "This is an info log message inside if:"+aff);
             return true;
         }
-        Log.i("MyTag", "This is an info log message:"+aff);
         return false;
     }
 
-    public boolean isPwdValid(String p) {
+    public static boolean isPwdValid(String p) {
         if (p.length() < 8) {
             return false;
         }

@@ -39,11 +39,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     DatabaseReference reference;
 
     private GoogleMap myMap;
-    private String building_name = "Doheny Memorial Library (DML)";
+    public String building_name = "Doheny Memorial Library (DML)";
     private boolean isLogin = false;
-    private RelativeLayout layout;
-    private String usrID;
-    private String username;
+    public RelativeLayout layout;
+    public String usrID;
 
     private PopupWindow popupWindow;
 
@@ -153,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     marker.showInfoWindow();
                 } else {
                     // jump to reserve page if logged in, else jump to login page
-                    reserveHandler(marker.getTitle());
+                    reserveHandler(marker.getTitle(), isLogin);
                 }
                 return true;
             }
@@ -176,13 +175,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-    private void reserveHandler(String name) {
-        if (isLogin) {
-            building_name = name;
+    boolean reserveHandler(String bname, boolean login) {
+        if (login) {
+            building_name = bname;
             layout = findViewById(R.id.main_layout);
-            createPopupWindow(name);
+            createPopupWindow(bname);
+            return true;
         } else {
             promptLogin();
+            return false;
         }
     }
     private void addDummyBuildings() {

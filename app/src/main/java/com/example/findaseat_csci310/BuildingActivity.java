@@ -1,5 +1,6 @@
 package com.example.findaseat_csci310;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +24,7 @@ import java.sql.Time;
 import java.util.Locale;
 import java.util.Vector;
 
-public class BuildingActivity extends AppCompatActivity {
+public class BuildingActivity extends Activity {
 
     public FirebaseDatabase root;
     public DatabaseReference reference;
