@@ -69,12 +69,18 @@ import com.google.firebase.database.FirebaseDatabase;
                  }
                  else {
                      if (String.valueOf(task.getResult().getValue()) != null) {
-                         registered = true;
-                         correctPassword = String.valueOf(task.getResult().child("pwd").getValue());
-                         username = String.valueOf(task.getResult().child("name").getValue());
-                         Log.d("firebase", "Success reading: id="+userid+", pwd="
+                         if (!String.valueOf(task.getResult().child("pwd").getValue()).equals(null)) {
+                            registered = true;
+                            correctPassword = String.valueOf(task.getResult().child("pwd").getValue());
+                            username = String.valueOf(task.getResult().child("name").getValue());
+                            Log.d("firebase", "Success reading: id="+userid+", pwd="
                                  +correctPassword+", username="+username);
-                         checkpwd();
+                            checkpwd();
+                         } else {
+                            Log.d("firebase", "No such id");
+                            registered = false;
+                         }
+
                      }
                  }
              }
@@ -83,7 +89,7 @@ import com.google.firebase.database.FirebaseDatabase;
      }
      private void checkpwd() {
          Log.d("firebase", "correct pwd=" +correctPassword);
-         if (!registered) {
+         if (correctPassword.length()<8) {
              AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
              builder.setMessage("Invalid ID. Please try again or sign up.")
                      .setCancelable(true)
