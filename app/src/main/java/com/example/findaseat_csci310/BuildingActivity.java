@@ -50,10 +50,20 @@ public class BuildingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // get user id
         usrID = intent.getStringExtra("id");
+
+        // for blackbox testing
+        if (usrID == null) {
+            usrID = "2000000001";
+        }
+
         // get building name
         buildingName = intent.getStringExtra("building_name");
         Log.d("intent", "building name: " + buildingName);
 
+        // for blackbox testing
+        if (buildingName == null) {
+            buildingName = "Kaprielian Hall (KAP)";
+        }
 
         // load data from firebase database
 //        load_time_slots();
@@ -61,7 +71,7 @@ public class BuildingActivity extends AppCompatActivity {
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
 
-
+        // check for active reservation
         reference.child("Users").child(usrID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
