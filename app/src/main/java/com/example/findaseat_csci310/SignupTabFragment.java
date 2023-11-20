@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 public class SignupTabFragment extends Fragment {
 
     public Uri imageUri;
-    Uri defaultUri = Uri.parse("android.resource://com.example.findaseat_csci310;/" + R.drawable.avatar);
+    private Uri defaultUri = Uri.parse("android.resource://com.example.findaseat_csci310;/" + R.drawable.avatar);
     public FirebaseStorage storage;
     public StorageReference storageRef;
     @Override
@@ -46,7 +46,7 @@ public class SignupTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_signup_tab, container, false);
-
+        imageUri = defaultUri;
         Button signupButton = view.findViewById(R.id.signup_button);
         Button avatar = view.findViewById(R.id.upload_avatar);
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,6 @@ public class SignupTabFragment extends Fragment {
                     uscID.setText("");
                     name.setText("");
                     affliation.setText("");
-                    imageView.setImageURI(defaultUri);
                 }
             }
         });
@@ -147,9 +146,11 @@ public class SignupTabFragment extends Fragment {
         pd.setTitle("Uploading Image...");
         pd.show();
 
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+
         // Create a storage reference from our app
-        String path = "avatars/" + id + ".jpg";
-        StorageReference avatarRef = storageRef.child(path);
+        StorageReference avatarRef = storageRef.child("avatars/" + id + ".jpg");
         if (imageUri == null) {
             imageUri = defaultUri;
         }
