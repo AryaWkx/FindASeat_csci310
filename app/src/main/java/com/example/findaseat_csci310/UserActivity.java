@@ -63,6 +63,9 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         usr_id = intent.getStringExtra("id");
+        if (usr_id== null) {
+            usr_id = "1000000001";
+        }
         Log.d("intent", "usrID received: " + usr_id);
         setContentView(R.layout.user_profile);
 
@@ -325,7 +328,12 @@ public class UserActivity extends AppCompatActivity {
             }
         }
         if (!isValid) {
-            Toast.makeText(getApplicationContext(), "Invalid time slot selection", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Invalid Timeslot Selected")
+                    .setCancelable(true)
+                    .setPositiveButton("OK", (dialog, id1) -> { dialog.dismiss(); });
+            AlertDialog alert = builder.create();
+            alert.show();
         } else {
             ArrayList<Integer> avail;
             if (user.currentReservation.in_out.equals("indoor")) {
