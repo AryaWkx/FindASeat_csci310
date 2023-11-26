@@ -94,7 +94,7 @@ public class UserActivity extends Activity {
 
 
         // Reference to an image file in Cloud Storage
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars"+usr_id+".jpg");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars/"+usr_id+".jpg");
         // Get the download URL
         ImageView imageView = findViewById(R.id.imageView);
         storageReference.getBytes(1024*1024)

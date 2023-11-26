@@ -93,7 +93,6 @@ public class ProfilePageTest {
         onView(withText("Invalid Timeslot Selected"))
                 .inRoot(isDialog()) // Use isDialog() to ensure the view is in a dialog
                 .check(matches(isDisplayed()));
-        Thread.sleep(5000);
     }
 
     @Test
