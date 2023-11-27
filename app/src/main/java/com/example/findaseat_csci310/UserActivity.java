@@ -134,6 +134,23 @@ public class UserActivity extends Activity {
                 finish();
                 return true;
             }
+            else if (item.getItemId() == R.id.bottom_logout) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to log out?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", (dialog, id1) -> {
+                            dialog.dismiss();
+                            Intent intent3 = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent3);
+                        })
+                        .setNegativeButton("No", (dialog, id1) -> {
+                            dialog.dismiss();
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+//                finish();
+                return true;
+            }
             return false;
         });
 
@@ -210,6 +227,9 @@ public class UserActivity extends Activity {
             Toast.makeText(getApplicationContext(), "No current reservation", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Initialize selected_slots
+        selected_slots = new ArrayList<>(Collections.nCopies(26, false));
 
         // create popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);

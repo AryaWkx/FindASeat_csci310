@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="85dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -216,7 +216,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="5dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"

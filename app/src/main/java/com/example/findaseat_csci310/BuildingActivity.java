@@ -1,6 +1,7 @@
 package com.example.findaseat_csci310;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -247,6 +248,22 @@ public class BuildingActivity extends Activity {
                 startActivity(intent2);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
+                return true;
+            } else if (item.getItemId() == R.id.bottom_logout) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to log out?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", (dialog, id1) -> {
+                            dialog.dismiss();
+                            Intent intent3 = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent3);
+                        })
+                        .setNegativeButton("No", (dialog, id1) -> {
+                            dialog.dismiss();
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+//                finish();
                 return true;
             }
             return false;

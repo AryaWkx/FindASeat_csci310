@@ -12,4 +12,8 @@
         android:id = "@+id/bottom_profile"
         android:icon="@drawable/baseline_person_pin_24"
         android:title="Profile"/>
+    <item
+        android:id = "@+id/bottom_logout"
+        android:icon="@drawable/baseline_logout_24"
+        android:title="Logout"/>
 </menu>
