@@ -313,7 +313,8 @@ public class UserActivity extends Activity {
 
     public void onClickConfirm(View view) {
         // check if the selected time slot is valid
-        boolean isValid = checkConsecutiveReservation(selected_slots) && checkTotalReservation(selected_slots);
+        boolean isValid = checkConsecutiveReservation(selected_slots) && checkTotalReservation(selected_slots)
+                && checkCurrentTime(selected_slots);
 
         if (!isValid) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

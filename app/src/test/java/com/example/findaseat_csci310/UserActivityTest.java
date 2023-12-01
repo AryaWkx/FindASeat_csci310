@@ -151,4 +151,5 @@ public class UserActivityTest {
         isValid = myActivity.checkTotalReservation(slots);
         assertTrue(isValid);
     }
+
 }
