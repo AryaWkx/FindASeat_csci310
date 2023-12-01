@@ -97,20 +97,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             }
             else if (item.getItemId() == R.id.bottom_logout) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Are you sure you want to log out?")
-                        .setCancelable(true)
-                        .setPositiveButton("Yes", (dialog, id1) -> {
-                            dialog.dismiss();
-                            Intent intent3 = new Intent(getApplicationContext(), LoginActivity.class);
-                            startActivity(intent3);
-                        })
-                        .setNegativeButton("No", (dialog, id1) -> {
-                            dialog.dismiss();
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-//                finish();
+                if (!isLogin) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("You have not logged in yet. Go log in?")
+                            .setCancelable(true)
+                            .setPositiveButton("Yes", (dialog, id1) -> {
+                                dialog.dismiss();
+                                Intent intent3 = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent3);
+                            })
+                            .setNegativeButton("No", (dialog, id1) -> {
+                                dialog.dismiss();
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Are you sure you want to log out?")
+                            .setCancelable(true)
+                            .setPositiveButton("Yes", (dialog, id1) -> {
+                                dialog.dismiss();
+                                Intent intent3 = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent3);
+                            })
+                            .setNegativeButton("No", (dialog, id1) -> {
+                                dialog.dismiss();
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
                 return true;
             }
             return false;

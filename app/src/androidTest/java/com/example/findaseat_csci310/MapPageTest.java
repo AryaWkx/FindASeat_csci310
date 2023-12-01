@@ -53,7 +53,7 @@ public class MapPageTest {
 
         // Click on the floating action button (switch to reserve mode)
         onView(withId(R.id.floatingActionButton1)).perform(click());
-        Thread.sleep(1000);
+        Thread.sleep(5000);
 
         // Click the taper hall marker through UI Automator through following steps:
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());

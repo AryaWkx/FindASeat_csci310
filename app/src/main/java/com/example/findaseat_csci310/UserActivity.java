@@ -42,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Map;
 
@@ -573,6 +574,29 @@ public class UserActivity extends Activity {
             }
         }
         return isValid;
+    }
+
+    public boolean checkCurrentTime(ArrayList<Boolean> slots) {
+
+        // Get the current hour and minute
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Convert current time to 30-min time slot
+        int current_slot = (hour-8)*2;
+        if (minute >= 30) {
+            current_slot += 1;
+        }
+
+        // Check if any slot before current_slot is chosen
+        for (int i=0; i<current_slot; i++) {
+            if (slots.get(i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
     public void cancel() {
         int size = user.history.size();

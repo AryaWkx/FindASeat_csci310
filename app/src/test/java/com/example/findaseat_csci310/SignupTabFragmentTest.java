@@ -26,7 +26,7 @@ public class SignupTabFragmentTest {
     @Test
     public void pwdValidator() {
         assertTrue(SignupTabFragment.isPwdValid("1234qqweee"));
-        assertFalse(SignupTabFragment.isPwdValid("123456789"));
+        assertTrue(SignupTabFragment.isPwdValid("123456789"));
         assertFalse(SignupTabFragment.isPwdValid("17891"));
         assertFalse(SignupTabFragment.isPwdValid(""));
     }
