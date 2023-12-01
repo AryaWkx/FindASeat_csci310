@@ -93,13 +93,13 @@ public class BuildingActivityAndroidTestEspresso {
             e.printStackTrace();
         }
 
-        onView(withText("Invalid Reservation!"))
+        onView(withText("No Time Slot Selected!"))
                 .inRoot(withDecorView(not(decorView)))
                 .check(matches(isDisplayed()));
     }
 
     @Test
-    public void testReserveWithInconsecutiveSlots() {
+    public void testReserveUnavailable() {
         setUser(0);
         // delay for a second
         try {
@@ -112,9 +112,37 @@ public class BuildingActivityAndroidTestEspresso {
                 .perform(scrollToPosition(0))
                 .perform(actionOnItemAtPosition(0, click()));
 
+        onView(withId(R.id.book_button)).perform(click());
+
+        // delay for a second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withText("No Available Seats!"))
+                .inRoot(withDecorView(not(decorView)))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testReserveNotConsecutive() {
+        setUser(0);
+        // delay for a second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         onView(withId(R.id.recyclerViewTimeSlots))
-                .perform(scrollToPosition(2))
-                .perform(actionOnItemAtPosition(2, click()));
+                .perform(scrollToPosition(20))
+                .perform(actionOnItemAtPosition(20, click()));
+
+        onView(withId(R.id.recyclerViewTimeSlots))
+                .perform(scrollToPosition(22))
+                .perform(actionOnItemAtPosition(22, click()));
 
         onView(withId(R.id.book_button)).perform(click());
 
@@ -125,7 +153,7 @@ public class BuildingActivityAndroidTestEspresso {
             e.printStackTrace();
         }
 
-        onView(withText("Invalid Reservation!"))
+        onView(withText("Time Slots Not Consecutive!"))
                 .inRoot(withDecorView(not(decorView)))
                 .check(matches(isDisplayed()));
     }
@@ -157,7 +185,7 @@ public class BuildingActivityAndroidTestEspresso {
             e.printStackTrace();
         }
 
-        onView(withText("Invalid Reservation!"))
+        onView(withText("Time Slots Not of the Same Type!"))
                 .inRoot(withDecorView(not(decorView)))
                 .check(matches(isDisplayed()));
     }
@@ -172,7 +200,7 @@ public class BuildingActivityAndroidTestEspresso {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 6; i++) {
             onView(withId(R.id.recyclerViewTimeSlots))
                     .perform(scrollToPosition(i))
                     .perform(actionOnItemAtPosition(i, click()));
@@ -187,7 +215,7 @@ public class BuildingActivityAndroidTestEspresso {
             e.printStackTrace();
         }
 
-        onView(withText("Invalid Reservation!"))
+        onView(withText("Too Many Time Slots Selected!"))
                 .inRoot(withDecorView(not(decorView)))
                 .check(matches(isDisplayed()));
     }
@@ -222,7 +250,7 @@ public class BuildingActivityAndroidTestEspresso {
             e.printStackTrace();
         }
 
-        onView(withText("Invalid Reservation!"))
+        onView(withText("You Have an Active Reservation!"))
                 .inRoot(withDecorView(not(decorView)))
                 .check(matches(isDisplayed()));
 

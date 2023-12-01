@@ -174,7 +174,7 @@ public class BuildingActivity extends Activity {
                         @Override
                         public void onClick(View view) {
                             // check if the selected time slots are valid
-                            if (isValid()) {
+                            if (isValid() == 0) {
                                 Log.d("Debug", "Reservation Valid!");
                                 // if valid, modify the building object and push to database
                                 for (int i = 0; i < selectedTimeSlots.size(); i++) {
@@ -213,7 +213,19 @@ public class BuildingActivity extends Activity {
                             } else {
                                 Log.d("Debug", "Reservation Invalid!");
                                 // if not valid, show error message
-                                Toast.makeText(getApplicationContext(), "Invalid Reservation!", Toast.LENGTH_SHORT).show();
+                                if (isValid() == 1) {
+                                    Toast.makeText(getApplicationContext(), "No Time Slot Selected!", Toast.LENGTH_SHORT).show();
+                                } else if (isValid() == 2) {
+                                    Toast.makeText(getApplicationContext(), "No Available Seats!", Toast.LENGTH_SHORT).show();
+                                } else if (isValid() == 3) {
+                                    Toast.makeText(getApplicationContext(), "Time Slots Not Consecutive!", Toast.LENGTH_SHORT).show();
+                                } else if (isValid() == 4) {
+                                    Toast.makeText(getApplicationContext(), "Time Slots Not of the Same Type!", Toast.LENGTH_SHORT).show();
+                                } else if (isValid() == 5) {
+                                    Toast.makeText(getApplicationContext(), "Too Many Time Slots Selected!", Toast.LENGTH_SHORT).show();
+                                } else if (isValid() == 6) {
+                                    Toast.makeText(getApplicationContext(), "You Have an Active Reservation!", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     });
@@ -283,43 +295,85 @@ public class BuildingActivity extends Activity {
 //        });
 //    }
 
-    private boolean isValid() {
+    public int isValid() {
         // if array empty, return false
-        if(selectedTimeSlots.size() == 0) {
-            return false;
+        if(isSelectedEmpty()) {
+            return 1;
         }
 
-        // sort the selected time slots by index
-        selectedTimeSlots.sort((o1, o2) -> o1.getIndex() - o2.getIndex());
+        if (!isSelectedAvailable()) {
+            return 2;
+        }
 
-        // track types
-        boolean indoor = false;
-        boolean outdoor = false;
-        // counter to track time slots
-        int slots_ct = 0;
+        if (!isSelectedConsecutive()) {
+            return 3;
+        }
 
+        if (!isSelectedSameType()) {
+            return 4;
+        }
+
+        if (!isSelectedLessThan4()) {
+            return 5;
+        }
+
+        // if active reservation, return false
+        if (!flag) {
+            return 6;
+        }
+
+        // otherwise valid
+        return 0;
+    }
+
+    // check if no time slots are selected
+    public boolean isSelectedEmpty() {
+        return selectedTimeSlots.isEmpty();
+    }
+
+    // check if selected time slots are available
+    public boolean isSelectedAvailable() {
         for (int i = 0; i < selectedTimeSlots.size(); i++) {
             TimeSlot timeSlot = selectedTimeSlots.get(i);
-            slots_ct++;
-            if (timeSlot.getType().equals("Indoor")) {
-                indoor = true;
-            } else {
-                outdoor = true;
-            }
-
-            // check if the time slots are available
             if (timeSlot.getAvailableSeats() <= 0) {
                 return false;
             }
+        }
+        return true;
+    }
 
-            //  check if the time slots are consecutive
+    // check if selected time slots are consecutive
+    public boolean isSelectedConsecutive() {
+        // sort the selected time slots by index
+        selectedTimeSlots.sort((o1, o2) -> o1.getIndex() - o2.getIndex());
+
+        // check if the time slots are consecutive
+        for (int i = 0; i < selectedTimeSlots.size(); i++) {
+            TimeSlot timeSlot = selectedTimeSlots.get(i);
             if (i != 0) {
                 if (timeSlot.getIndex() != selectedTimeSlots.get(i-1).getIndex()+1) {
                     return false;
                 }
-                if (timeSlot.getIndex() == 25) {
-                    return false;
-                }
+//                if (timeSlot.getIndex() == 26) {
+//                    return false;
+//                }
+            }
+        }
+        return true;
+    }
+
+    // check if selected time slots are of the same type
+    public boolean isSelectedSameType() {
+        // track types
+        boolean indoor = false;
+        boolean outdoor = false;
+
+        for (int i = 0; i < selectedTimeSlots.size(); i++) {
+            TimeSlot timeSlot = selectedTimeSlots.get(i);
+            if (timeSlot.getType().equals("Indoor")) {
+                indoor = true;
+            } else {
+                outdoor = true;
             }
         }
 
@@ -328,18 +382,16 @@ public class BuildingActivity extends Activity {
             return false;
         }
 
-        // if slot count > 4, return false
-        if (slots_ct > 4) {
-            return false;
-        }
-
-        // if active reservation, return false
-        if (!flag) {
-            return false;
-        }
-
-        // otherwise valid
         return true;
+    }
+
+    // check if selected time slots are less than 4
+    public boolean isSelectedLessThan4() {
+        return selectedTimeSlots.size() <= 4;
+    }
+
+    public boolean isActiveReservation() {
+        return user.currentReservation != null;
     }
 
 }
