@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.sql.Time;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.Calendar;
 
 public class BuildingActivity extends Activity {
 
@@ -158,7 +159,7 @@ public class BuildingActivity extends Activity {
                                     selectedTimeSlots.add(timeSlot);
                                     // TODO: set background color to blue
                                     if (itemView != null) {
-                                        // set background color to blue
+                                        // set background color to lavender
                                         itemView.setBackgroundColor(getResources().getColor(R.color.lavender));
                                     }
                                     // for debug purpose
@@ -225,6 +226,8 @@ public class BuildingActivity extends Activity {
                                     Toast.makeText(getApplicationContext(), "Too Many Time Slots Selected!", Toast.LENGTH_SHORT).show();
                                 } else if (isValid() == 6) {
                                     Toast.makeText(getApplicationContext(), "You Have an Active Reservation!", Toast.LENGTH_SHORT).show();
+                                } else if (isValid() == 7) {
+                                    Toast.makeText(getApplicationContext(), "Selected Time Slots Are in the Past!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -322,6 +325,11 @@ public class BuildingActivity extends Activity {
             return 6;
         }
 
+        // if current time is earlier than selected time, return false
+        if (!isCurrentTimeEarlier()) {
+            return 7;
+        }
+
         // otherwise valid
         return 0;
     }
@@ -392,6 +400,28 @@ public class BuildingActivity extends Activity {
 
     public boolean isActiveReservation() {
         return user.currentReservation != null;
+    }
+
+    public boolean isCurrentTimeEarlier() {
+        // Get the current hour and minute
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Convert current time to 30-min time slot
+        int current_slot = (hour-8)*2;
+        if (minute >= 30) {
+            current_slot += 1;
+        }
+
+        // Check if any slot before current_slot is chosen
+        for (TimeSlot slot : selectedTimeSlots) {
+            if (slot.getIndex() < current_slot) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

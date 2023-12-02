@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
         load_mapview();
 
-//        addDummyBuidings();
+//        addDummyBuildings();
 //        addDummyUser();
 
         // navigation bar selector
