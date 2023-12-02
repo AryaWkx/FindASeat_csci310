@@ -10,7 +10,7 @@ After open the project directory in Android Studio, run the app using the settin
 - The circle button on the middle of buttom (but above the navigation bar) controls the clicking mode which can switch between info-displaying or reservation-action mode. 
 - In info-displaying mode, you can click on the markers
 - In reserve-action mode, you can try to reserve a building if logged in
-- Any attemp to view profile page or reserve spots will prompt you to login if you are not
+- Any attempt to view profile page or reserve spots will prompt you to login if you are not
 
 ### Login & Signup
 - **A valid credential to log in: id = 0000000001, password = 12345678**. (Dummy inputs of reservation and reservation history have been put into this account)
@@ -27,3 +27,7 @@ After open the project directory in Android Studio, run the app using the settin
 - You should see building information (building name,  abbreviation, and location) and booking information.
 - You can select time slots on the booking information scroll menu.
 - Book button can be clicked to make reservations (then redirect user back to the map view if successful, prompt error message if not).
+
+### Improved Capabilities Since Project 2.4
+- Current Time Constraint: introduce logic to prevent reservations for time slots that have already passed relative to the current time.
+- Logout Functionality: integrate a feature that allows users to log out of the application.
