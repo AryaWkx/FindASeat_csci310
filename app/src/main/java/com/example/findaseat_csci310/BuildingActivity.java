@@ -102,7 +102,14 @@ public class BuildingActivity extends Activity {
                     // parse building name into name and abbreviation, split by "("
                     String[] buildingNameSplit = building.name.split("\\(");
                     buildingNameTextView.setText("Building Name: " + buildingNameSplit[0]);
-                    buildingAbbreviationTextView.setText("Building Name Abbreviation: " + buildingNameSplit[1].substring(0, buildingNameSplit[1].length()-1));
+                    if (buildingNameSplit.length > 1)
+                    {
+                        buildingAbbreviationTextView.setText("Building Name Abbreviation: " + buildingNameSplit[1].substring(0, buildingNameSplit[1].length()-1));
+                    }
+                    else
+                    {
+                        buildingAbbreviationTextView.setText("Building Name Abbreviation: NULL");
+                    }
                     // set address as (lat, lng)
                     TextView buildingAddressTextView = findViewById(R.id.building_address);
                     buildingAddressTextView.setText("(" + building.lat + ", " + building.lng + ")");
@@ -115,7 +122,7 @@ public class BuildingActivity extends Activity {
                     // set layout
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     // create a time slot adapter
-                    TimeSlotAdapter timeSlotAdapter = new TimeSlotAdapter(context, timeSlots);
+                    TimeSlotAdapter timeSlotAdapter = new TimeSlotAdapter(context, timeSlots, selectedTimeSlots);
                     // assign adapter to the recycler view
                     recyclerView.setAdapter(timeSlotAdapter);
 
@@ -148,20 +155,10 @@ public class BuildingActivity extends Activity {
                                 // if the time slot is selected, remove it from the list and reset background color
                                 if (isSelected) {
                                     selectedTimeSlots.remove(timeSlot);
-                                    // TODO: reset background color to default
-                                    if (itemView != null) {
-                                        // set background color to default
-                                        itemView.setBackgroundColor(getResources().getColor(R.color.white));
-                                    }
                                     // for debug purpose
                                     Log.d("Debug", "time slot deselected: " + timeSlot.getTime());
                                 } else {
                                     selectedTimeSlots.add(timeSlot);
-                                    // TODO: set background color to blue
-                                    if (itemView != null) {
-                                        // set background color to lavender
-                                        itemView.setBackgroundColor(getResources().getColor(R.color.lavender));
-                                    }
                                     // for debug purpose
                                     Log.d("Debug", "time slot selected: " + timeSlot.getTime());
                                 }

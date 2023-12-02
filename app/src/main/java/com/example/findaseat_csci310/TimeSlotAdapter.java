@@ -15,11 +15,13 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotViewHolder>{
 
     Context context;
     List<TimeSlot> timeSlotList = new ArrayList<TimeSlot>();
+    List<TimeSlot> selectedSlots = new ArrayList<TimeSlot>();
     private OnClickListener onClickListener;
 
-    public TimeSlotAdapter(Context context, List<TimeSlot> timeSlotList) {
+    public TimeSlotAdapter(Context context, List<TimeSlot> timeSlotList, List<TimeSlot> selectedSlots) {
         this.context = context;
         this.timeSlotList = timeSlotList;
+        this.selectedSlots = selectedSlots;
     }
 
     @NonNull
@@ -34,6 +36,13 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotViewHolder>{
         holder.timeSlot.setText(item.getTime());
         holder.type.setText(item.getType());
         holder.availableSeats.setText(String.valueOf(item.getAvailableSeats()));
+
+        // set background color for each time slot item
+        if (selectedSlots.contains(item)) {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.lavender));
+        } else {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }
 
         // set onClickListener for each time slot item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
